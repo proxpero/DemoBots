@@ -17,7 +17,7 @@ struct EntityDistance {
     
 /**
     Stores a snapshot of the state of a level and all of its entities
-    (`PlayerBot`s and `TaskBot`s) at a certain point in time.
+    (`Player`s and `TaskBot`s) at a certain point in time.
 */
 class LevelStateSnapshot {
     // MARK: Properties
@@ -30,12 +30,12 @@ class LevelStateSnapshot {
     /// Initializes a new `LevelStateSnapshot` representing all of the entities in a `LevelScene`.
     init(scene: LevelScene) {
         
-        /// Returns the `GKAgent2D` for a `PlayerBot` or `TaskBot`.
+        /// Returns the `GKAgent2D` for a `Player` or `TaskBot`.
         func agentForEntity(entity: GKEntity) -> GKAgent2D {
             if let agent = entity.component(ofType: TaskBotAgent.self) {
                 return agent
             }
-            else if let playerBot = entity as? PlayerBot {
+            else if let playerBot = entity as? Player {
                 return playerBot.agent
             }
             
@@ -118,8 +118,8 @@ class EntitySnapshot {
     /// The factor used to normalize distances between characters for 'fuzzy' logic.
     let proximityFactor: Float
     
-    /// Distance to the `PlayerBot` if it is targetable.
-    let playerBotTarget: (target: PlayerBot, distance: Float)?
+    /// Distance to the `Player` if it is targetable.
+    let playerBotTarget: (target: Player, distance: Float)?
     
     /// The nearest "good" `TaskBot`.
     let nearestGoodTaskBotTarget: (target: TaskBot, distance: Float)?
@@ -138,22 +138,22 @@ class EntitySnapshot {
             return $0.distance < $1.distance
         }
         
-        var playerBotTarget: (target: PlayerBot, distance: Float)?
+        var playerBotTarget: (target: Player, distance: Float)?
         var nearestGoodTaskBotTarget: (target: TaskBot, distance: Float)?
         
         /*
-            Iterate over the sorted `entityDistances` array to find the `PlayerBot`
+            Iterate over the sorted `entityDistances` array to find the `Player`
             (if it is targetable) and the nearest "good" `TaskBot`.
         */
         for entityDistance in self.entityDistances {
-            if let target = entityDistance.target as? PlayerBot, playerBotTarget == nil && target.isTargetable {
+            if let target = entityDistance.target as? Player, playerBotTarget == nil && target.isTargetable {
                 playerBotTarget = (target: target, distance: entityDistance.distance)
             }
             else if let target = entityDistance.target as? TaskBot, nearestGoodTaskBotTarget == nil && target.isGood {
                 nearestGoodTaskBotTarget = (target: target, distance: entityDistance.distance)
             }
             
-            // Stop iterating over the array once we have found both the `PlayerBot` and the nearest good `TaskBot`.
+            // Stop iterating over the array once we have found both the `Player` and the nearest good `TaskBot`.
             if playerBotTarget != nil && nearestGoodTaskBotTarget != nil {
                 break
             }

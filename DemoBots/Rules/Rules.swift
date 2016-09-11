@@ -8,10 +8,10 @@
                     `BadTaskBotPercentageLowRule`
                     `BadTaskBotPercentageMediumRule`
                     `BadTaskBotPercentageHighRule`
-                How close the `TaskBot` is to the `PlayerBot` (near, medium, far):
-                    `PlayerBotNearRule`
-                    `PlayerBotMediumRule`
-                    `PlayerBotFarRule`
+                How close the `TaskBot` is to the `Player` (near, medium, far):
+                    `PlayerNearRule`
+                    `PlayerMediumRule`
+                    `PlayerFarRule`
                 How close the `TaskBot` is to its nearest "good" `TaskBot` (near, medium, far):
                     `TaskBotNearRule`
                     `TaskBotMediumRule`
@@ -26,10 +26,10 @@ enum Fact: String {
     case badTaskBotPercentageMedium = "BadTaskBotPercentageMedium"
     case badTaskBotPercentageHigh = "BadTaskBotPercentageHigh"
 
-    // Fuzzy rules pertaining to this `TaskBot`'s proximity to the `PlayerBot`.
-    case playerBotNear = "PlayerBotNear"
-    case playerBotMedium = "PlayerBotMedium"
-    case playerBotFar = "PlayerBotFar"
+    // Fuzzy rules pertaining to this `TaskBot`'s proximity to the `Player`.
+    case playerBotNear = "PlayerNear"
+    case playerBotMedium = "PlayerMedium"
+    case playerBotFar = "PlayerFar"
 
     // Fuzzy rules pertaining to this `TaskBot`'s proximity to the nearest "good" `TaskBot`.
     case goodTaskBotNear = "GoodTaskBotNear"
@@ -81,8 +81,8 @@ class BadTaskBotPercentageHighRule: FuzzyTaskBotRule {
     init() { super.init(fact: .badTaskBotPercentageHigh) }
 }
 
-/// Asserts whether the `PlayerBot` is considered to be "near" to this `TaskBot`.
-class PlayerBotNearRule: FuzzyTaskBotRule {
+/// Asserts whether the `Player` is considered to be "near" to this `TaskBot`.
+class PlayerNearRule: FuzzyTaskBotRule {
     // MARK: Properties
 
     override func grade() -> Float {
@@ -96,8 +96,8 @@ class PlayerBotNearRule: FuzzyTaskBotRule {
     init() { super.init(fact: .playerBotNear) }
 }
 
-/// Asserts whether the `PlayerBot` is considered to be at a "medium" distance from this `TaskBot`.
-class PlayerBotMediumRule: FuzzyTaskBotRule {
+/// Asserts whether the `Player` is considered to be at a "medium" distance from this `TaskBot`.
+class PlayerMediumRule: FuzzyTaskBotRule {
     // MARK: Properties
 
     override func grade() -> Float {
@@ -111,8 +111,8 @@ class PlayerBotMediumRule: FuzzyTaskBotRule {
     init() { super.init(fact: .playerBotMedium) }
 }
 
-/// Asserts whether the `PlayerBot` is considered to be "far" from this `TaskBot`.
-class PlayerBotFarRule: FuzzyTaskBotRule {
+/// Asserts whether the `Player` is considered to be "far" from this `TaskBot`.
+class PlayerFarRule: FuzzyTaskBotRule {
     // MARK: Properties
     
     override func grade() -> Float {

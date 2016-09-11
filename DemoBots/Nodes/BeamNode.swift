@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    An `SKNode` subclass used as a container for the visual components that make up a `PlayerBot`'s beam.
+    An `SKNode` subclass used as a container for the visual components that make up a `Player`'s beam.
 */
 
 import SpriteKit
@@ -82,7 +82,7 @@ class BeamNode: SKNode, ResourceLoadableType {
     
     // MARK: Actions
     
-    func update(withBeamState state: GKState, source: PlayerBot, target: TaskBot? = nil) {
+    func update(withBeamState state: GKState, source: Player, target: TaskBot? = nil) {
         // Constrain the position of the target's antenna if it's not already constrained to it.
         if let target = target, let targetNode = target.component(ofType: RenderComponent.self)?.node, destinationNode.constraints?.first?.referenceNode != targetNode {
                 let xRange = SKRange(constantValue: target.beamTargetOffset.x)
@@ -203,7 +203,7 @@ class BeamNode: SKNode, ResourceLoadableType {
         }
     }
 
-    func positionLineNode(from source: PlayerBot, to target: TaskBot) {
+    func positionLineNode(from source: Player, to target: TaskBot) {
         guard let lineNode = lineNode else { fatalError("positionLineNodeFrom(_: to:) requires a lineNode to have been created.") }
         
         // Calculate the source and destination positions.

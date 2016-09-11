@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    The state of the `PlayerBot`'s beam when not in use.
+    The state of the `Player`'s beam when not in use.
 */
 
 import SpriteKit

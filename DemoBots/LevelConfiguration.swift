@@ -63,8 +63,8 @@ struct LevelConfiguration {
     /// Cached data loaded from the level's data file.
     private let configurationInfo: [String: AnyObject]
     
-    /// The initial orientation of the `PlayerBot` when the level is first loaded.
-    let initialPlayerBotOrientation: CompassDirection
+    /// The initial orientation of the `Player` when the level is first loaded.
+    let initialPlayerOrientation: CompassDirection
 
     /// The configuration settings for `TaskBots` on this level.
     let taskBotConfigurations: [TaskBotConfiguration]
@@ -105,6 +105,6 @@ struct LevelConfiguration {
         // Map the array of `TaskBot` configuration dictionaries to an array of `TaskBotConfiguration` instances.
         taskBotConfigurations = botConfigurations.map { TaskBotConfiguration(botConfigurationInfo: $0) }
         
-        initialPlayerBotOrientation = CompassDirection(string: configurationInfo["initialPlayerBotOrientation"] as! String)
+        initialPlayerOrientation = CompassDirection(string: configurationInfo["initialPlayerOrientation"] as! String)
     }
 }

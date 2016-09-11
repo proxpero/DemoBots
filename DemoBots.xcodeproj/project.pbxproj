@@ -34,7 +34,7 @@
 		0A38ABF11B73BDE300AE9C43 /* LevelSceneSuccessState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 166D02941ADC9C8F00ADD8BA /* LevelSceneSuccessState.swift */; };
 		0A38ABF21B73BDE300AE9C43 /* LevelScene+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D800081AF3F7F900979C5F /* LevelScene+Debug.swift */; };
 		0A38ABF31B73BDE300AE9C43 /* SceneOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A81581B15140A00D33DF8 /* SceneOverlay.swift */; };
-		0A38ABF41B73BDE700AE9C43 /* PlayerBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* PlayerBot.swift */; };
+		0A38ABF41B73BDE700AE9C43 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* Player.swift */; };
 		0A38ABF51B73BDE700AE9C43 /* TaskBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* TaskBot.swift */; };
 		0A38ABF61B73BDE700AE9C43 /* FlyingBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CAD5241AEBA48E00D9B7A9 /* FlyingBot.swift */; };
 		0A38ABF71B73BDE700AE9C43 /* GroundBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57F87E21AED59450026E72F /* GroundBot.swift */; };
@@ -108,7 +108,7 @@
 		0A38AC411B73BE5600AE9C43 /* PauseScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E352871AEC145A00985A5E /* PauseScene.sks */; };
 		0A38AC421B73BE5600AE9C43 /* FailScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E3528A1AEC14E300985A5E /* FailScene.sks */; };
 		0A38AC431B73BE5600AE9C43 /* SuccessScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E3528D1AEC153300985A5E /* SuccessScene.sks */; };
-		0A38AC441B73BE5C00AE9C43 /* PlayerBot.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170941B0F791800DA6B2B /* PlayerBot.xcassets */; };
+		0A38AC441B73BE5C00AE9C43 /* Player.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170941B0F791800DA6B2B /* Player.xcassets */; };
 		0A38AC451B73BE5C00AE9C43 /* Beam.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5528BCA71B10F40B00FD3FC7 /* Beam.xcassets */; };
 		0A38AC461B73BE5C00AE9C43 /* BeamLine.sks in Resources */ = {isa = PBXBuildFile; fileRef = 5528BCA61B10F40B00FD3FC7 /* BeamLine.sks */; };
 		0A38AC471B73BE5C00AE9C43 /* Teleport.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 1600D2851ABC85FE0054D6EE /* Teleport.fsh */; };
@@ -157,8 +157,8 @@
 		16109B641AF54D3800A780AE /* FuzzyTaskBotRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16109B621AF54D3800A780AE /* FuzzyTaskBotRule.swift */; };
 		16109B661AF5510900A780AE /* RulesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16109B651AF5510900A780AE /* RulesComponent.swift */; };
 		16109B671AF5510900A780AE /* RulesComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16109B651AF5510900A780AE /* RulesComponent.swift */; };
-		162475941A9E7AC300AC49AB /* PlayerBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* PlayerBot.swift */; };
-		162475951A9E7AC300AC49AB /* PlayerBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* PlayerBot.swift */; };
+		162475941A9E7AC300AC49AB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* Player.swift */; };
+		162475951A9E7AC300AC49AB /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* Player.swift */; };
 		163A26671AA5415100DDDD80 /* ChargeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A26661AA5415100DDDD80 /* ChargeComponent.swift */; };
 		163A26681AA5415100DDDD80 /* ChargeComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 163A26661AA5415100DDDD80 /* ChargeComponent.swift */; };
 		164756271AB110CF00C21730 /* IntelligenceComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 164756261AB110CF00C21730 /* IntelligenceComponent.swift */; };
@@ -247,8 +247,8 @@
 		55D170961B0F791800DA6B2B /* FlyingBot.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170921B0F791800DA6B2B /* FlyingBot.xcassets */; };
 		55D170971B0F791800DA6B2B /* GroundBot.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170931B0F791800DA6B2B /* GroundBot.xcassets */; };
 		55D170981B0F791800DA6B2B /* GroundBot.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170931B0F791800DA6B2B /* GroundBot.xcassets */; };
-		55D170991B0F791800DA6B2B /* PlayerBot.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170941B0F791800DA6B2B /* PlayerBot.xcassets */; };
-		55D1709A1B0F791800DA6B2B /* PlayerBot.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170941B0F791800DA6B2B /* PlayerBot.xcassets */; };
+		55D170991B0F791800DA6B2B /* Player.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170941B0F791800DA6B2B /* Player.xcassets */; };
+		55D1709A1B0F791800DA6B2B /* Player.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55D170941B0F791800DA6B2B /* Player.xcassets */; };
 		55E352881AEC145A00985A5E /* PauseScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E352871AEC145A00985A5E /* PauseScene.sks */; };
 		55E352891AEC145A00985A5E /* PauseScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E352871AEC145A00985A5E /* PauseScene.sks */; };
 		55E3528B1AEC14E300985A5E /* FailScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 55E3528A1AEC14E300985A5E /* FailScene.sks */; };
@@ -362,7 +362,7 @@
 		16109B5F1AF54D2E00A780AE /* Rules.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rules.swift; sourceTree = "<group>"; };
 		16109B621AF54D3800A780AE /* FuzzyTaskBotRule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzyTaskBotRule.swift; sourceTree = "<group>"; };
 		16109B651AF5510900A780AE /* RulesComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RulesComponent.swift; sourceTree = "<group>"; };
-		162475931A9E7AC300AC49AB /* PlayerBot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerBot.swift; sourceTree = "<group>"; };
+		162475931A9E7AC300AC49AB /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		163A26661AA5415100DDDD80 /* ChargeComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChargeComponent.swift; sourceTree = "<group>"; };
 		164756261AB110CF00C21730 /* IntelligenceComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntelligenceComponent.swift; sourceTree = "<group>"; };
 		166D028F1ADC9BED00ADD8BA /* LevelSceneActiveState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelSceneActiveState.swift; sourceTree = "<group>"; };
@@ -414,7 +414,7 @@
 		55CC8FE71B0CF59B003AEAE0 /* ShadowComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShadowComponent.swift; sourceTree = "<group>"; };
 		55D170921B0F791800DA6B2B /* FlyingBot.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = FlyingBot.xcassets; path = ../FlyingBot.xcassets; sourceTree = "<group>"; };
 		55D170931B0F791800DA6B2B /* GroundBot.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = GroundBot.xcassets; path = ../GroundBot.xcassets; sourceTree = "<group>"; };
-		55D170941B0F791800DA6B2B /* PlayerBot.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PlayerBot.xcassets; sourceTree = "<group>"; };
+		55D170941B0F791800DA6B2B /* Player.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Player.xcassets; sourceTree = "<group>"; };
 		55E352871AEC145A00985A5E /* PauseScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = PauseScene.sks; path = "LevelScene states/PauseScene.sks"; sourceTree = "<group>"; };
 		55E3528A1AEC14E300985A5E /* FailScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = FailScene.sks; path = "LevelScene states/FailScene.sks"; sourceTree = "<group>"; };
 		55E3528D1AEC153300985A5E /* SuccessScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = SuccessScene.sks; path = "LevelScene states/SuccessScene.sks"; sourceTree = "<group>"; };
@@ -492,7 +492,7 @@
 		0A23B3C91B41ABB200F1E675 /* PlayerBot */ = {
 			isa = PBXGroup;
 			children = (
-				55D170941B0F791800DA6B2B /* PlayerBot.xcassets */,
+				55D170941B0F791800DA6B2B /* Player.xcassets */,
 				5528BCA71B10F40B00FD3FC7 /* Beam.xcassets */,
 				5528BCA61B10F40B00FD3FC7 /* BeamLine.sks */,
 				1600D2851ABC85FE0054D6EE /* Teleport.fsh */,
@@ -588,7 +588,7 @@
 		162475921A9E7A5800AC49AB /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				162475931A9E7AC300AC49AB /* PlayerBot.swift */,
+				162475931A9E7AC300AC49AB /* Player.swift */,
 				B5DC405B1AFCA80100FD3900 /* TaskBot.swift */,
 				B5CAD5241AEBA48E00D9B7A9 /* FlyingBot.swift */,
 				B57F87E21AED59450026E72F /* GroundBot.swift */,
@@ -1020,7 +1020,7 @@
 				0A38AC391B73BE4100AE9C43 /* Level1.sks in Resources */,
 				0A38AC431B73BE5600AE9C43 /* SuccessScene.sks in Resources */,
 				0A5ED64E1B73BE9100A36D86 /* spark.png in Resources */,
-				0A38AC441B73BE5C00AE9C43 /* PlayerBot.xcassets in Resources */,
+				0A38AC441B73BE5C00AE9C43 /* Player.xcassets in Resources */,
 				0A38AC3F1B73BE4900AE9C43 /* Level3.sks in Resources */,
 				0A38AC451B73BE5C00AE9C43 /* Beam.xcassets in Resources */,
 				0A5ED64C1B73BE9100A36D86 /* FlyingBotBadAttackParticleEmitter.sks in Resources */,
@@ -1032,7 +1032,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5528BCAB1B10F40B00FD3FC7 /* Beam.xcassets in Resources */,
-				55D1709A1B0F791800DA6B2B /* PlayerBot.xcassets in Resources */,
+				55D1709A1B0F791800DA6B2B /* Player.xcassets in Resources */,
 				551F668A1B1190B200A3CDA1 /* spark.png in Resources */,
 				558044361B203A2600470E29 /* Level3.sks in Resources */,
 				55F9DADF1B1FF1CF002E7029 /* Level2.sks in Resources */,
@@ -1069,7 +1069,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5528BCAA1B10F40B00FD3FC7 /* Beam.xcassets in Resources */,
-				55D170991B0F791800DA6B2B /* PlayerBot.xcassets in Resources */,
+				55D170991B0F791800DA6B2B /* Player.xcassets in Resources */,
 				B5B2DA701BE0DD6B00DF201F /* HomeScene.sks in Resources */,
 				5580442A1B2038DE00470E29 /* Level1.xcassets in Resources */,
 				55081EFB1B967F6B00E7C454 /* Images.xcassets in Resources */,
@@ -1137,7 +1137,7 @@
 				B5B2DA6E1BE0DD4900DF201F /* ThumbStickNode.swift in Sources */,
 				0A38AC031B73BDF300AE9C43 /* PlayerBotHitState.swift in Sources */,
 				0A38AC261B73BE2400AE9C43 /* SceneLoaderInitialState.swift in Sources */,
-				0A38ABF41B73BDE700AE9C43 /* PlayerBot.swift in Sources */,
+				0A38ABF41B73BDE700AE9C43 /* Player.swift in Sources */,
 				0A38AC2A1B73BE2400AE9C43 /* SceneLoaderPreparingResourcesState.swift in Sources */,
 				0A38ABED1B73BDE300AE9C43 /* LevelSceneActiveState.swift in Sources */,
 				0A38ABE91B73BDE000AE9C43 /* HomeEndScene.swift in Sources */,
@@ -1201,7 +1201,7 @@
 				16950F701A9C08240074F3EC /* ColliderType.swift in Sources */,
 				B5BC4A0B1AF263C700ABC4A6 /* BeamNode.swift in Sources */,
 				0A3BC6581B1BF41D0014F1FB /* SceneLoaderInitialState.swift in Sources */,
-				162475951A9E7AC300AC49AB /* PlayerBot.swift in Sources */,
+				162475951A9E7AC300AC49AB /* Player.swift in Sources */,
 				B57F87EA1AED5B190026E72F /* GroundBotAttackState.swift in Sources */,
 				55E352921AEC248400985A5E /* LevelSceneOverlayState.swift in Sources */,
 				166D02961ADC9C8F00ADD8BA /* LevelSceneFailState.swift in Sources */,
@@ -1303,7 +1303,7 @@
 				166D02971ADC9C8F00ADD8BA /* LevelScenePauseState.swift in Sources */,
 				168482F71AA66D2400EAB4C0 /* ChargeBar.swift in Sources */,
 				0ADCE3371B1BE3F200E85CEB /* ResourceLoadableType.swift in Sources */,
-				162475941A9E7AC300AC49AB /* PlayerBot.swift in Sources */,
+				162475941A9E7AC300AC49AB /* Player.swift in Sources */,
 				0A724CEA1B17C6CE00F64132 /* SceneLoaderResourcesAvailableState.swift in Sources */,
 				16873A0B1A9E6DC2003FB425 /* RenderComponent.swift in Sources */,
 				0AEEA9B71AE1E3C300C519E7 /* GeometryExtensions.swift in Sources */,

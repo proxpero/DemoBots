@@ -30,47 +30,47 @@ struct GameplayConfiguration {
         static let coolDownDuration: TimeInterval = 1.0
     }
 
-    struct PlayerBot {
-        /// The movement speed (in points per second) for the `PlayerBot`.
+    struct Player {
+        /// The movement speed (in points per second) for the `Player`.
         static let movementSpeed: CGFloat = 210.0
 
-        /// The angular rotation speed (in radians per second) for the `PlayerBot`.
+        /// The angular rotation speed (in radians per second) for the `Player`.
         static let angularSpeed = CGFloat(M_PI) * 1.4
         
-        /// The radius of the `PlayerBot`'s physics body.
+        /// The radius of the `Player`'s physics body.
         static var physicsBodyRadius: CGFloat = 30.0
         
-        /// The offset of the `PlayerBot`'s physics body's center from the `PlayerBot`'s center.
+        /// The offset of the `Player`'s physics body's center from the `Player`'s center.
         static let physicsBodyOffset = CGPoint(x: 0.0, y: -25.0)
         
-        /// The radius of the agent associated with this `PlayerBot` for pathfinding.
+        /// The radius of the agent associated with this `Player` for pathfinding.
         static let agentRadius = Float(physicsBodyRadius)
         
-        /// The offset of the agent's center from the `PlayerBot`'s center.
+        /// The offset of the agent's center from the `Player`'s center.
         static let agentOffset = physicsBodyOffset
         
-        /// The offset of the `PlayerBot`'s antenna
+        /// The offset of the `Player`'s antenna
         static let antennaOffset = CGPoint(x: 0.0, y: 50.0)
         
-        /// The offset of the `PlayerBot`'s charge bar from its position.
+        /// The offset of the `Player`'s charge bar from its position.
         static let chargeBarOffset = CGPoint(x: 0.0, y: 65.0)
         
-        /// The initial charge value for the `PlayerBot`'s health bar.
+        /// The initial charge value for the `Player`'s health bar.
         static let initialCharge = 100.0
 
-        /// The maximum charge value for the `PlayerBot`'s health bar.
+        /// The maximum charge value for the `Player`'s health bar.
         static let maximumCharge = 100.0
         
-        /// The length of time for which the `PlayerBot` remains in its "hit" state.
+        /// The length of time for which the `Player` remains in its "hit" state.
         static let hitStateDuration: TimeInterval = 0.75
         
-        /// The length of time that it takes the `PlayerBot` to recharge when deactivated.
+        /// The length of time that it takes the `Player` to recharge when deactivated.
         static let rechargeDelayWhenInactive: TimeInterval = 2.0
         
-        /// The amount of charge that the `PlayerBot` gains per second when recharging.
+        /// The amount of charge that the `Player` gains per second when recharging.
         static let rechargeAmountPerSecond = 10.0
         
-        /// The amount of time it takes the `PlayerBot` to appear in a level before becoming controllable by the player.
+        /// The amount of time it takes the `Player` to appear in a level before becoming controllable by the player.
         static let appearDuration: TimeInterval = 0.50
     }
 
@@ -149,7 +149,7 @@ struct GameplayConfiguration {
         /// The radius of a `FlyingBot` blast.
         static let blastRadius: Float = 100.0
         
-        /// The amount of charge a `FlyingBot` blast drains from `PlayerBot`s per second.
+        /// The amount of charge a `FlyingBot` blast drains from `Player`s per second.
         static let blastChargeLossPerSecond = 25.0
 
         /// The duration of a `FlyingBot` blast.
@@ -169,7 +169,7 @@ struct GameplayConfiguration {
         /// The maximum amount of charge a `GroundBot` stores.
         static let maximumCharge = 100.0
         
-        /// The amount of charge a `PlayerBot` loses by a single `GroundBot` attack.
+        /// The amount of charge a `Player` loses by a single `GroundBot` attack.
         static let chargeLossPerContact = 25.0
         
         /// The maximum distance a `GroundBot` can be from a target before it attacks.

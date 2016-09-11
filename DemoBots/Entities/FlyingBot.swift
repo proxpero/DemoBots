@@ -129,8 +129,8 @@ class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
             // Contact with good task bot will trigger an attack.
             shouldStartAttack = true
         }
-        else if let playerBot = entity as? PlayerBot, !playerBot.isPoweredDown {
-            // Contact with an active `PlayerBot` will trigger an attack.
+        else if let playerBot = entity as? Player, !playerBot.isPoweredDown {
+            // Contact with an active `Player` will trigger an attack.
             shouldStartAttack = true
         }
         

@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    The state of a `GroundBot` when actively charging toward the `PlayerBot` or another `TaskBot`.
+    The state of a `GroundBot` when actively charging toward the `Player` or another `TaskBot`.
 */
 
 import SpriteKit
@@ -129,8 +129,8 @@ class GroundBotAttackState: GKState {
     // MARK: Convenience
     
     func applyDamageToEntity(entity: GKEntity) {
-        if let playerBot = entity as? PlayerBot, let chargeComponent = playerBot.component(ofType: ChargeComponent.self), !playerBot.isPoweredDown  {
-            // If the other entity is a `PlayerBot` that isn't powered down, reduce its charge.
+        if let playerBot = entity as? Player, let chargeComponent = playerBot.component(ofType: ChargeComponent.self), !playerBot.isPoweredDown  {
+            // If the other entity is a `Player` that isn't powered down, reduce its charge.
             chargeComponent.loseCharge(chargeToLose: GameplayConfiguration.GroundBot.chargeLossPerContact)
         }
         else if let taskBot = entity as? TaskBot, taskBot.isGood {

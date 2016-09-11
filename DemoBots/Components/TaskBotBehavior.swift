@@ -13,7 +13,7 @@ import GameplayKit
 class TaskBotBehavior: GKBehavior {
     // MARK: Behavior factory methods
     
-    /// Constructs a behavior to hunt a `TaskBot` or `PlayerBot` via a computed path.
+    /// Constructs a behavior to hunt a `TaskBot` or `Player` via a computed path.
     static func behaviorAndPathPoints(forAgent agent: GKAgent2D, huntingAgent target: GKAgent2D, pathRadius: Float, inScene scene: LevelScene) -> (behavior: GKBehavior, pathPoints: [CGPoint]) {
         let behavior = TaskBotBehavior()
         

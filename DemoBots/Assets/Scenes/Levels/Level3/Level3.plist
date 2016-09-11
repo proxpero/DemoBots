@@ -6,7 +6,7 @@
 	<real>240</real>
 	<key>flyByDuration</key>
 	<integer>4</integer>
-	<key>initialPlayerBotOrientation</key>
+	<key>initialPlayerOrientation - 2</key>
 	<string>South</string>
 	<key>proximityFactor</key>
 	<integer>1600</integer>

@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    The state representing the `PlayerBot`'s beam when it is being fired at a `TaskBot`.
+    The state representing the `Player`'s beam when it is being fired at a `TaskBot`.
 */
 
 import SpriteKit
@@ -20,9 +20,9 @@ class BeamFiringState: GKState {
     /// The amount of time the beam has been in its "firing" state.
     var elapsedTime: TimeInterval = 0.0
 
-    /// The `PlayerBot` associated with the `BeamComponent`'s `entity`.
-    var playerBot: PlayerBot {
-        guard let playerBot = beamComponent.entity as? PlayerBot else { fatalError("A BeamFiringState's beamComponent must be associated with a PlayerBot.") }
+    /// The `Player` associated with the `BeamComponent`'s `entity`.
+    var playerBot: Player {
+        guard let playerBot = beamComponent.entity as? Player else { fatalError("A BeamFiringState's beamComponent must be associated with a Player.") }
         return playerBot
     }
     
@@ -53,7 +53,7 @@ class BeamFiringState: GKState {
             
             /*
                 The `BeamComponent`'s `BeamNode` is added to the scene at the `.AboveCharacter` level.
-                This ensures it appears above the `PlayerBot` and all `TaskBot`s in the scene.
+                This ensures it appears above the `Player` and all `TaskBot`s in the scene.
             */
             guard let scene = renderComponent.node.scene as? LevelScene else { fatalError("The RenderComponent's node must be in a scene.") }
 
@@ -66,7 +66,7 @@ class BeamFiringState: GKState {
             let aboveCharactersNode = scene.worldLayerNodes[.aboveCharacters]!
             aboveCharactersNode.addChild(beamComponent.beamNode)
             
-            // Constrain the `BeamNode` to the antenna position on the `PlayerBot`'s node.
+            // Constrain the `BeamNode` to the antenna position on the `Player`'s node.
             let xRange = SKRange(constantValue: playerBot.antennaOffset.x)
             let yRange = SKRange(constantValue: playerBot.antennaOffset.y)
             

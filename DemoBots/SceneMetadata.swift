@@ -87,12 +87,12 @@ struct SceneMetadata {
         }
         
         /*
-            We will always need the `PlayerBot` and the `BeamNode` 
+            We will always need the `Player` and the `BeamNode` 
             if the scene is a `LevelScene`, so add these `ResourceLoadableType`s 
             by default.
         */
         if sceneType == LevelScene.self {
-            loadableTypesForScene = loadableTypesForScene + [PlayerBot.self, BeamNode.self]
+            loadableTypesForScene = loadableTypesForScene + [Player.self, BeamNode.self]
         }
         
         // Set up the `loadableTypes` to be prepared when the scene is requested.

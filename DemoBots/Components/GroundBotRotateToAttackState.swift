@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A state that `GroundBot`s enter prior to rotate toward the `PlayerBot` or another `TaskBot` prior to attack.
+    A state that `GroundBot`s enter prior to rotate toward the `Player` or another `TaskBot` prior to attack.
 */
 
 import SpriteKit

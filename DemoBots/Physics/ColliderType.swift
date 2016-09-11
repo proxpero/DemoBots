@@ -25,7 +25,7 @@ struct ColliderType: OptionSet, Hashable, CustomDebugStringConvertible {
     // MARK: Options
     
     static var Obstacle: ColliderType  { return self.init(rawValue: 1 << 0) }
-    static var PlayerBot: ColliderType { return self.init(rawValue: 1 << 1) }
+    static var Player: ColliderType { return self.init(rawValue: 1 << 1) }
     static var TaskBot: ColliderType   { return self.init(rawValue: 1 << 2) }
 
     // MARK: Hashable
@@ -41,8 +41,8 @@ struct ColliderType: OptionSet, Hashable, CustomDebugStringConvertible {
             case ColliderType.Obstacle.rawValue:
                 return "ColliderType.Obstacle"
                 
-            case ColliderType.PlayerBot.rawValue:
-                return "ColliderType.PlayerBot"
+            case ColliderType.Player.rawValue:
+                return "ColliderType.Player"
             
             case ColliderType.TaskBot.rawValue:
                 return "ColliderType.TaskBot"

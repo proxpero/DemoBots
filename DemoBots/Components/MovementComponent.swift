@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A `GKComponent` that enables an entity to move appropriately for the input directing it. Used by a `PlayerBot` to move around a level in response to input from its `InputComponent`, and used by a `GroundBot` to perform its charging-forward attack.
+    A `GKComponent` that enables an entity to move appropriately for the input directing it. Used by a `Player` to move around a level in response to input from its `InputComponent`, and used by a `GroundBot` to perform its charging-forward attack.
 */
 
 import SpriteKit
@@ -80,8 +80,8 @@ class MovementComponent: GKComponent {
     // MARK: Initializers
     
     override init() {
-        movementSpeed = GameplayConfiguration.PlayerBot.movementSpeed
-        angularSpeed = GameplayConfiguration.PlayerBot.angularSpeed
+        movementSpeed = GameplayConfiguration.Player.movementSpeed
+        angularSpeed = GameplayConfiguration.Player.angularSpeed
         super.init()
     }
     

@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A `GKComponent` that tracks the "charge" (or "health") of a `PlayerBot` or `TaskBot`. For a `PlayerBot`, "charge" indicates how much power the `PlayerBot` has left before it must recharge (during which time the `PlayerBot` is inactive). For a `TaskBot`, "charge" indicates whether the `TaskBot` is "good" or "bad".
+    A `GKComponent` that tracks the "charge" (or "health") of a `Player` or `TaskBot`. For a `Player`, "charge" indicates how much power the `Player` has left before it must recharge (during which time the `Player` is inactive). For a `TaskBot`, "charge" indicates whether the `TaskBot` is "good" or "bad".
 */
 
 import SpriteKit

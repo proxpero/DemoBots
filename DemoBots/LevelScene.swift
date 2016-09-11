@@ -11,7 +11,7 @@ import GameplayKit
 
 /// The names and z-positions of each layer in a level's world.
 enum WorldLayer: CGFloat {
-    // The zPosition offset to use per character (`PlayerBot` or `TaskBot`).
+    // The zPosition offset to use per character (`Player` or `TaskBot`).
     static let zSpacePerCharacter: CGFloat = 100
     
     // Specifying `AboveCharacters` as 1000 gives room for 9 enemies on a level.
@@ -48,7 +48,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
         return childNode(withName: "world")!
     }
 
-    let playerBot = PlayerBot()
+    let playerBot = Player()
     var entities = Set<GKEntity>()
     
     var lastUpdateTimeInterval: TimeInterval = 0
@@ -142,8 +142,8 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
         // Create references to the base nodes that define the different layers of the scene.
         loadWorldLayers()
 
-        // Add a `PlayerBot` for the player.
-        beamInPlayerBot()
+        // Add a `Player` for the player.
+        beamInPlayer()
         
         // Gravity will be in the negative z direction; there is no x or y component.
         physicsWorld.gravity = CGVector.zero
@@ -281,7 +281,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
         // Check if the `playerBot` has been added to this scene.
         if let playerBotNode = playerBot.component(ofType: RenderComponent.self)?.node, playerBotNode.scene == self {
             /*
-                Update the `PlayerBot`'s agent position to match its node position.
+                Update the `Player`'s agent position to match its node position.
                 This makes sure that the agent is in a valid location in the SpriteKit
                 physics world at the start of its next update cycle.
             */
@@ -412,8 +412,8 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
                 addNode(node: chargeBar, toWorldLayer: .aboveCharacters)
                 
                 // Constrain the `ChargeBar`'s node position to the render node.
-                let xRange = SKRange(constantValue: GameplayConfiguration.PlayerBot.chargeBarOffset.x)
-                let yRange = SKRange(constantValue: GameplayConfiguration.PlayerBot.chargeBarOffset.y)
+                let xRange = SKRange(constantValue: GameplayConfiguration.Player.chargeBarOffset.x)
+                let yRange = SKRange(constantValue: GameplayConfiguration.Player.chargeBarOffset.y)
 
                 let constraint = SKConstraint.positionX(xRange, y: yRange)
                 constraint.referenceNode = renderNode
@@ -505,7 +505,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
     
     // MARK: Convenience
     
-    /// Constrains the camera to follow the PlayerBot without approaching the scene edges.
+    /// Constrains the camera to follow the Player without approaching the scene edges.
     private func setCameraConstraints() {
         // Don't try to set up camera constraints if we don't yet have a camera.
         guard let camera = camera else { return }
@@ -558,7 +558,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
         
         /*
             Add both constraints to the camera. The scene edge constraint is added
-            second, so that it takes precedence over following the `PlayerBot`.
+            second, so that it takes precedence over following the `Player`.
             The result is that the camera will follow the player, unless this would mean
             moving too close to the edge of the level.
         */
@@ -581,7 +581,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
         #endif
     }
     
-    private func beamInPlayerBot() {
+    private func beamInPlayer() {
         // Find the location of the player's initial position.
         let charactersNode = childNode(withName: WorldLayer.characters.nodePath)!
         let transporterCoordinate = charactersNode.childNode(withName: "transporter_coordinate")!
@@ -590,17 +590,17 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
         guard let orientationComponent = playerBot.component(ofType: OrientationComponent.self) else {
             fatalError("A player bot must have an orientation component to be able to be added to a level")
         }
-        orientationComponent.compassDirection = levelConfiguration.initialPlayerBotOrientation
+        orientationComponent.compassDirection = levelConfiguration.initialPlayerOrientation
 
-        // Set up the `PlayerBot` position in the scene.
+        // Set up the `Player` position in the scene.
         let playerNode = playerBot.renderComponent.node
         playerNode.position = transporterCoordinate.position
         playerBot.updateAgentPositionToMatchNodePosition()
         
-        // Constrain the camera to the `PlayerBot` position and the level edges.
+        // Constrain the camera to the `Player` position and the level edges.
         setCameraConstraints()
         
-        // Add the `PlayerBot` to the scene and component systems.
+        // Add the `Player` to the scene and component systems.
         addEntity(entity: playerBot)
     }
   

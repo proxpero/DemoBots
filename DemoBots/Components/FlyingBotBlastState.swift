@@ -125,7 +125,7 @@ class FlyingBotBlastState: GKState {
     
     // MARK: Convenience
     
-    /// Finds all entities (`PlayerBot`s and `TaskBot`s) who are in range of this blast attack.
+    /// Finds all entities (`Player`s and `TaskBot`s) who are in range of this blast attack.
     func entitiesInRange() -> [GKEntity] {
         // Retrieve an entity snapshot containing the distances from this `TaskBot` to other entities in the `LevelScene`.
         guard let level = renderComponent.node.scene as? LevelScene else { return [] }
@@ -165,18 +165,18 @@ class FlyingBotBlastState: GKState {
         }
     }
     
-    /// Performs a "bad" blast that removes charge from the `PlayerBot` and turns "good" `TaskBot`s "bad".
+    /// Performs a "bad" blast that removes charge from the `Player` and turns "good" `TaskBot`s "bad".
     func performBadBlast(withDeltaTime seconds: TimeInterval) {
-        // Calculate how much charge `PlayerBot`s should lose if hit by this application of the blast attack.
+        // Calculate how much charge `Player`s should lose if hit by this application of the blast attack.
         let chargeToLose = GameplayConfiguration.FlyingBot.blastChargeLossPerSecond * seconds
         
         // Iterate through all of the entities inside the blast radius.
         let entities = entitiesInRange()
         
         for entity in entities {
-            if let playerBot = entity as? PlayerBot, !playerBot.isPoweredDown,
+            if let playerBot = entity as? Player, !playerBot.isPoweredDown,
                 let chargeComponent = entity.component(ofType: ChargeComponent.self) {
-                // Decrease the charge of a `PlayerBot` if it is in range and not powered down.
+                // Decrease the charge of a `Player` if it is in range and not powered down.
                 chargeComponent.loseCharge(chargeToLose: chargeToLose)
             }
             else if let taskBot = entity as? TaskBot, taskBot.isGood {

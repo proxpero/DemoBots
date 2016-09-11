@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    An `SKSpriteNode` subclass that displays a `PlayerBot`'s remaining charge.
+    An `SKSpriteNode` subclass that displays a `Player`'s remaining charge.
 */
 
 import SpriteKit

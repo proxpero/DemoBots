@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A `GKComponent` that supplies and manages the `PlayerBot`'s beam. The beam is used to convert "bad" `TaskBot`s into "good" `TaskBot`s.
+    A `GKComponent` that supplies and manages the `Player`'s beam. The beam is used to convert "bad" `TaskBot`s into "good" `TaskBot`s.
 */
 
 import SpriteKit
@@ -63,9 +63,9 @@ class BeamComponent: GKComponent {
     */
     var stateMachine: GKStateMachine!
     
-    /// The 'PlayerBot' this component is associated with.
-    var playerBot: PlayerBot {
-        guard let playerBot = entity as? PlayerBot else { fatalError("BeamComponents must be associated with a PlayerBot") }
+    /// The 'Player' this component is associated with.
+    var playerBot: Player {
+        guard let playerBot = entity as? Player else { fatalError("BeamComponents must be associated with a Player") }
         return playerBot
     }
     
@@ -140,7 +140,7 @@ class BeamComponent: GKComponent {
                 Determine the angle between the `playerBotAntenna` and the `taskBotAntenna`
                 adjusting for the distance between the two entities. 
             
-                This adjustment allows for easier aiming as the `PlayerBot` and `TaskBot`
+                This adjustment allows for easier aiming as the `Player` and `TaskBot`
                 get closer together.
             */
             let arcAngle = playerBotAntenna.angleTo(target: taskBotAntenna) * targetDistanceRatio
@@ -148,7 +148,7 @@ class BeamComponent: GKComponent {
                 return false
             }
 
-            // Filter out `TaskBot`s where there is scenery between their antenna and the `PlayerBot`'s antenna.
+            // Filter out `TaskBot`s where there is scenery between their antenna and the `Player`'s antenna.
             var hasLineOfSite = true
             level.physicsWorld.enumerateBodies(alongRayStart: playerBotAntenna.position, end: taskBotAntenna.position) { obstacleBody, _, _, stop in
                 // Ignore nodes that have an entity as they are not scenery.
@@ -162,7 +162,7 @@ class BeamComponent: GKComponent {
                 
                 /*
                     If the obstacle's lowest y-position is less than the `TaskBot`'s y-position or
-                    the 'PlayerBot'`s y-position, then it blocks the line of sight.
+                    the 'Player'`s y-position, then it blocks the line of sight.
                 */
                 if obstacleLowestY < taskBotNode.position.y || obstacleLowestY < playerBotNode.position.y {
                     hasLineOfSite = false

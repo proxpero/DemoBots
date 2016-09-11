@@ -14,7 +14,7 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
     
     /// Encapsulates a `TaskBot`'s current mandate, i.e. the aim that the `TaskBot` is setting out to achieve.
     enum TaskBotMandate {
-        // Hunt another agent (either a `PlayerBot` or a "good" `TaskBot`).
+        // Hunt another agent (either a `Player` or a "good" `TaskBot`).
         case huntAgent(GKAgent2D)
 
         // Follow the `TaskBot`'s "good" patrol path.
@@ -210,9 +210,9 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
 
         // Create and add a rules component to encapsulate all of the rules that can affect a `TaskBot`'s behavior.
         let rulesComponent = RulesComponent(rules: [
-            PlayerBotNearRule(),
-            PlayerBotMediumRule(),
-            PlayerBotFarRule(),
+            PlayerNearRule(),
+            PlayerMediumRule(),
+            PlayerFarRule(),
             GoodTaskBotNearRule(),
             GoodTaskBotMediumRule(),
             GoodTaskBotFarRule(),
@@ -290,7 +290,7 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         // Adjust the `TaskBot`'s `mandate` based on the result of evaluating the rules.
         
         // A series of situations in which we prefer this `TaskBot` to hunt the player.
-        let huntPlayerBotRaw = [
+        let huntPlayerRaw = [
             // "Number of bad TaskBots is high" AND "Player is nearby".
             ruleSystem.minimumGrade(forFacts: [
                 Fact.badTaskBotPercentageHigh.rawValue as AnyObject,
@@ -329,7 +329,7 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         ]
 
         // Find the maximum of the minima from above.
-        let huntPlayerBot = huntPlayerBotRaw.reduce(0.0, max)
+        let huntPlayer = huntPlayerRaw.reduce(0.0, max)
 
         // A series of situations in which we prefer this `TaskBot` to hunt the nearest "good" TaskBot.
         let huntTaskBotRaw = [
@@ -388,13 +388,13 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         // Find the maximum of the minima from above.
         let huntTaskBot = huntTaskBotRaw.reduce(0.0, max)
         
-        if huntPlayerBot >= huntTaskBot && huntPlayerBot > 0.0 {
-            // The rules provided greater motivation to hunt the PlayerBot. Ignore any motivation to hunt the nearest good TaskBot.
+        if huntPlayer >= huntTaskBot && huntPlayer > 0.0 {
+            // The rules provided greater motivation to hunt the Player. Ignore any motivation to hunt the nearest good TaskBot.
             guard let playerBotAgent = state.playerBotTarget?.target.agent else { return }
             mandate = .huntAgent(playerBotAgent)
         }
-        else if huntTaskBot > huntPlayerBot {
-            // The rules provided greater motivation to hunt the nearest good TaskBot. Ignore any motivation to hunt the PlayerBot.
+        else if huntTaskBot > huntPlayer {
+            // The rules provided greater motivation to hunt the nearest good TaskBot. Ignore any motivation to hunt the Player.
             mandate = .huntAgent(state.nearestGoodTaskBotTarget!.target.agent)
         }
         else {
@@ -518,13 +518,13 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
     class func loadSharedAssets() {
         ColliderType.definedCollisions[.TaskBot] = [
             .Obstacle,
-            .PlayerBot,
+            .Player,
             .TaskBot
         ]
         
         ColliderType.requestedContactNotifications[.TaskBot] = [
             .Obstacle,
-            .PlayerBot,
+            .Player,
             .TaskBot
         ]
     }

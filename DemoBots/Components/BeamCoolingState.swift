@@ -55,7 +55,7 @@ class BeamCoolingState: GKState {
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
         
-        if let playerBot = beamComponent.entity as? PlayerBot {
+        if let playerBot = beamComponent.entity as? Player {
             beamComponent.beamNode.update(withBeamState: nextState, source: playerBot)
         }
     }

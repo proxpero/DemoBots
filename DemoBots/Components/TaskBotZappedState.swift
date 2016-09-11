@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A state used to represent the `TaskBot` when being zapped by a `PlayerBot` attack.
+    A state used to represent the `TaskBot` when being zapped by a `Player` attack.
 */
 
 import SpriteKit
