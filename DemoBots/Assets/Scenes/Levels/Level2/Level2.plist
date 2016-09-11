@@ -6,7 +6,7 @@
 	<string>Level00</string>
 	<key>timeLimit</key>
 	<integer>180</integer>
-	<key>initialPlayerOrientation - 2</key>
+	<key>initialPlayerOrientation</key>
 	<string>South</string>
 	<key>proximityFactor</key>
 	<integer>1000</integer>
