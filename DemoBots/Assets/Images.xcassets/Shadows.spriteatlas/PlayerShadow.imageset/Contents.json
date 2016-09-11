@@ -2,27 +2,27 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "PlayerBotShadow.png",
+      "filename" : "PlayerShadow.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "PlayerBotShadow@2x.png",
+      "filename" : "PlayerShadow@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "PlayerBotShadow@3x.png",
+      "filename" : "PlayerShadow@3x.png",
       "scale" : "3x"
     },
     {
       "idiom" : "mac",
-      "filename" : "PlayerBotShadow@2x.png",
+      "filename" : "PlayerShadow@2x.png",
       "scale" : "1x"
     },
     {
       "idiom" : "mac",
-      "filename" : "PlayerBotShadow@3x.png",
+      "filename" : "PlayerShadow@3x.png",
       "scale" : "2x"
     }
   ],
