@@ -35,7 +35,7 @@
 		0A38ABF21B73BDE300AE9C43 /* LevelScene+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16D800081AF3F7F900979C5F /* LevelScene+Debug.swift */; };
 		0A38ABF31B73BDE300AE9C43 /* SceneOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54A81581B15140A00D33DF8 /* SceneOverlay.swift */; };
 		0A38ABF41B73BDE700AE9C43 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 162475931A9E7AC300AC49AB /* Player.swift */; };
-		0A38ABF51B73BDE700AE9C43 /* TaskBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* TaskBot.swift */; };
+		0A38ABF51B73BDE700AE9C43 /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* Robot.swift */; };
 		0A38ABF61B73BDE700AE9C43 /* FlyingBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CAD5241AEBA48E00D9B7A9 /* FlyingBot.swift */; };
 		0A38ABF71B73BDE700AE9C43 /* GroundBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57F87E21AED59450026E72F /* GroundBot.swift */; };
 		0A38ABF81B73BDE700AE9C43 /* TaskBotAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A73CB3F1B1CDEB80030BB13 /* TaskBotAgent.swift */; };
@@ -329,8 +329,8 @@
 		B5D2B9261BE0DFF9005AF39E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B5D2B9241BE0DFF9005AF39E /* LaunchScreen.storyboard */; };
 		B5D5FB621B1B7E3D007D0C86 /* ContactNotifiableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D5FB611B1B7E3D007D0C86 /* ContactNotifiableType.swift */; };
 		B5D5FB631B1B7E3D007D0C86 /* ContactNotifiableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D5FB611B1B7E3D007D0C86 /* ContactNotifiableType.swift */; };
-		B5DC405C1AFCA80100FD3900 /* TaskBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* TaskBot.swift */; };
-		B5DC405D1AFCA80B00FD3900 /* TaskBot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* TaskBot.swift */; };
+		B5DC405C1AFCA80100FD3900 /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* Robot.swift */; };
+		B5DC405D1AFCA80B00FD3900 /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DC405B1AFCA80100FD3900 /* Robot.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -461,7 +461,7 @@
 		B5D2B9251BE0DFF9005AF39E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = "DemoBots (iOS)/Base.lproj/LaunchScreen.storyboard"; sourceTree = SOURCE_ROOT; };
 		B5D2B9271BE0E7D8005AF39E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		B5D5FB611B1B7E3D007D0C86 /* ContactNotifiableType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ContactNotifiableType.swift; path = Protocols/ContactNotifiableType.swift; sourceTree = "<group>"; };
-		B5DC405B1AFCA80100FD3900 /* TaskBot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskBot.swift; sourceTree = "<group>"; };
+		B5DC405B1AFCA80100FD3900 /* Robot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Robot.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -589,7 +589,7 @@
 			isa = PBXGroup;
 			children = (
 				162475931A9E7AC300AC49AB /* Player.swift */,
-				B5DC405B1AFCA80100FD3900 /* TaskBot.swift */,
+				B5DC405B1AFCA80100FD3900 /* Robot.swift */,
 				B5CAD5241AEBA48E00D9B7A9 /* FlyingBot.swift */,
 				B57F87E21AED59450026E72F /* GroundBot.swift */,
 				0A73CB3F1B1CDEB80030BB13 /* TaskBotAgent.swift */,
@@ -1180,7 +1180,7 @@
 				0A38AC1E1B73BE0A00AE9C43 /* ColliderType.swift in Sources */,
 				0A38AC131B73BDF800AE9C43 /* ShadowComponent.swift in Sources */,
 				0A38AC001B73BDEF00AE9C43 /* InputComponent.swift in Sources */,
-				0A38ABF51B73BDE700AE9C43 /* TaskBot.swift in Sources */,
+				0A38ABF51B73BDE700AE9C43 /* Robot.swift in Sources */,
 				0A38ABF31B73BDE300AE9C43 /* SceneOverlay.swift in Sources */,
 				0A38AC2B1B73BE2400AE9C43 /* SceneLoaderResourcesReadyState.swift in Sources */,
 				0A38ABF11B73BDE300AE9C43 /* LevelSceneSuccessState.swift in Sources */,
@@ -1235,7 +1235,7 @@
 				0A73CB441B1CE91C0030BB13 /* LoadResourcesOperation.swift in Sources */,
 				0AE522321B7BC9D800F3BD36 /* LevelScene+Pause.swift in Sources */,
 				16873A0A1A9E6DC2003FB425 /* MovementComponent.swift in Sources */,
-				B5DC405D1AFCA80B00FD3900 /* TaskBot.swift in Sources */,
+				B5DC405D1AFCA80B00FD3900 /* Robot.swift in Sources */,
 				B52D2DFD1AFD11E000469E3B /* PlayerBotRechargingState.swift in Sources */,
 				169B38AD1A73279B00B850B8 /* GameInput.swift in Sources */,
 				B52556F91B1BB21B00C7D9EF /* CompassDirection.swift in Sources */,
@@ -1345,7 +1345,7 @@
 				163A26671AA5415100DDDD80 /* ChargeComponent.swift in Sources */,
 				B5B2DA761BE0DDB200DF201F /* GameViewController.swift in Sources */,
 				16109B5D1AF5442A00A780AE /* LevelStateSnapshot.swift in Sources */,
-				B5DC405C1AFCA80100FD3900 /* TaskBot.swift in Sources */,
+				B5DC405C1AFCA80100FD3900 /* Robot.swift in Sources */,
 				55E352911AEC248400985A5E /* LevelSceneOverlayState.swift in Sources */,
 				B52D2DF91AFD115700469E3B /* PlayerBotPlayerControlledState.swift in Sources */,
 				B52D2DF81AFD115700469E3B /* PlayerBotRechargingState.swift in Sources */,
