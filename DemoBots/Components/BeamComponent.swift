@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A `GKComponent` that supplies and manages the `Player`'s beam. The beam is used to convert "bad" `TaskBot`s into "good" `TaskBot`s.
+    A `GKComponent` that supplies and manages the `Player`'s beam. The beam is used to convert "bad" `Robot`s into "good" `Robot`s.
 */
 
 import SpriteKit
@@ -107,31 +107,31 @@ class BeamComponent: GKComponent {
     // MARK: Convenience
 
     /**
-        Finds the nearest "bad" `TaskBot` that lies within the beam's arc.
-        Returns `nil` if no `TaskBot`s are within targeting range.
+        Finds the nearest "bad" `Robot` that lies within the beam's arc.
+        Returns `nil` if no `Robot`s are within targeting range.
     */
-    func findTargetInBeamArc(withCurrentTarget currentTarget: TaskBot?) -> TaskBot? {
+    func findTargetInBeamArc(withCurrentTarget currentTarget: Robot?) -> Robot? {
         let playerBotNode = renderComponent.node
         
-        // Use the player's `EntitySnapshot` to build an array of targetable `TaskBot`s who's antennas are within the beam's arc.
+        // Use the player's `EntitySnapshot` to build an array of targetable `Robot`s who's antennas are within the beam's arc.
         guard let level = playerBotNode.scene as? LevelScene else { return nil }
         guard let snapshot = level.entitySnapshotForEntity(entity: playerBot) else { return nil }
         
         let botsInArc = snapshot.entityDistances.filter { entityDistance in
-            guard let taskBot = entityDistance.target as? TaskBot else { return false }
+            guard let taskBot = entityDistance.target as? Robot else { return false }
             
-            // Filter out entities that aren't "bad" `TaskBot`s with a `RenderComponent`.
+            // Filter out entities that aren't "bad" `Robot`s with a `RenderComponent`.
             guard let taskBotNode = taskBot.component(ofType: RenderComponent.self)?.node else { return false }
             if taskBot.isGood {
                 return false
             }
             
-            // Filter out `TaskBot`s that are too far away.
+            // Filter out `Robot`s that are too far away.
             if entityDistance.distance > Float(GameplayConfiguration.Beam.arcLength) {
                 return false
             }
             
-            // Filter out any `TaskBot` who's antenna is not within the beam's arc.
+            // Filter out any `Robot` who's antenna is not within the beam's arc.
             let taskBotAntenna = AntennaInfo(entity: taskBot, antennaOffset: taskBot.beamTargetOffset)
             
             let targetDistanceRatio = entityDistance.distance / Float(GameplayConfiguration.Beam.arcLength)
@@ -140,7 +140,7 @@ class BeamComponent: GKComponent {
                 Determine the angle between the `playerBotAntenna` and the `taskBotAntenna`
                 adjusting for the distance between the two entities. 
             
-                This adjustment allows for easier aiming as the `Player` and `TaskBot`
+                This adjustment allows for easier aiming as the `Player` and `Robot`
                 get closer together.
             */
             let arcAngle = playerBotAntenna.angleTo(target: taskBotAntenna) * targetDistanceRatio
@@ -148,7 +148,7 @@ class BeamComponent: GKComponent {
                 return false
             }
 
-            // Filter out `TaskBot`s where there is scenery between their antenna and the `Player`'s antenna.
+            // Filter out `Robot`s where there is scenery between their antenna and the `Player`'s antenna.
             var hasLineOfSite = true
             level.physicsWorld.enumerateBodies(alongRayStart: playerBotAntenna.position, end: taskBotAntenna.position) { obstacleBody, _, _, stop in
                 // Ignore nodes that have an entity as they are not scenery.
@@ -161,7 +161,7 @@ class BeamComponent: GKComponent {
                 let obstacleLowestY = obstacleNode.calculateAccumulatedFrame().origin.y
                 
                 /*
-                    If the obstacle's lowest y-position is less than the `TaskBot`'s y-position or
+                    If the obstacle's lowest y-position is less than the `Robot`'s y-position or
                     the 'Player'`s y-position, then it blocks the line of sight.
                 */
                 if obstacleLowestY < taskBotNode.position.y || obstacleLowestY < playerBotNode.position.y {
@@ -172,10 +172,10 @@ class BeamComponent: GKComponent {
             
             return hasLineOfSite
         }.map {
-            return $0.target as! TaskBot
+            return $0.target as! Robot
         }
 
-        let target: TaskBot?
+        let target: Robot?
         
         // If the current target is still targetable, continue to target it.
         if let currentTarget = currentTarget, botsInArc.contains(currentTarget) {

@@ -74,7 +74,7 @@ extension SKSpriteNode {
             
             // Add a debug shape layer if we are turning on debug drawing for this node.
             if newValue == true {
-                let bufferRadius = CGFloat(GameplayConfiguration.TaskBot.pathfindingGraphBufferRadius)
+                let bufferRadius = CGFloat(GameplayConfiguration.Robot.pathfindingGraphBufferRadius)
                 let bufferFrame = frame.insetBy(dx: -bufferRadius, dy: -bufferRadius)
                 let bufferedShape = SKShapeNode(rectOf: bufferFrame.size)
                 bufferedShape.fillColor = SKColor(red: CGFloat(1.0), green: CGFloat(0.5), blue: CGFloat(0.0), alpha: CGFloat(0.2))

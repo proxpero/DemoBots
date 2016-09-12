@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    The state representing the `Player`'s beam when it is being fired at a `TaskBot`.
+    The state representing the `Player`'s beam when it is being fired at a `Robot`.
 */
 
 import SpriteKit
@@ -14,8 +14,8 @@ class BeamFiringState: GKState {
     
     unowned var beamComponent: BeamComponent
 
-    /// The `TaskBot` currently being targeted by the beam.
-    var target: TaskBot?
+    /// The `Robot` currently being targeted by the beam.
+    var target: Robot?
     
     /// The amount of time the beam has been in its "firing" state.
     var elapsedTime: TimeInterval = 0.0
@@ -53,7 +53,7 @@ class BeamFiringState: GKState {
             
             /*
                 The `BeamComponent`'s `BeamNode` is added to the scene at the `.AboveCharacter` level.
-                This ensures it appears above the `Player` and all `TaskBot`s in the scene.
+                This ensures it appears above the `Player` and all `Robot`s in the scene.
             */
             guard let scene = renderComponent.node.scene as? LevelScene else { fatalError("The RenderComponent's node must be in a scene.") }
 

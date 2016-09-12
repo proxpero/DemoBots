@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A state used to represent the player when immobilized by `TaskBot` attacks.
+    A state used to represent the player when immobilized by `Robot` attacks.
 */
 
 import SpriteKit

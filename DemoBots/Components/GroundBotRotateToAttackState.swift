@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A state that `GroundBot`s enter prior to rotate toward the `Player` or another `TaskBot` prior to attack.
+    A state that `GroundBot`s enter prior to rotate toward the `Player` or another `Robot` prior to attack.
 */
 
 import SpriteKit
@@ -79,7 +79,7 @@ class GroundBotRotateToAttackState: GKState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is TaskBotAgentControlledState.Type, is GroundBotPreAttackState.Type, is TaskBotZappedState.Type:
+            case is RobotAgentControlledState.Type, is GroundBotPreAttackState.Type, is RobotZappedState.Type:
                 return true
             
             default:

@@ -9,18 +9,18 @@
 import SpriteKit
 import GameplayKit
 
-class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentDelegate {
+class Robot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentDelegate {
     // MARK: Nested types
     
-    /// Encapsulates a `TaskBot`'s current mandate, i.e. the aim that the `TaskBot` is setting out to achieve.
-    enum TaskBotMandate {
-        // Hunt another agent (either a `Player` or a "good" `TaskBot`).
+    /// Encapsulates a `Robot`'s current mandate, i.e. the aim that the `Robot` is setting out to achieve.
+    enum RobotMandate {
+        // Hunt another agent (either a `Player` or a "good" `Robot`).
         case huntAgent(GKAgent2D)
 
-        // Follow the `TaskBot`'s "good" patrol path.
+        // Follow the `Robot`'s "good" patrol path.
         case followGoodPatrolPath
 
-        // Follow the `TaskBot`'s "bad" patrol path.
+        // Follow the `Robot`'s "bad" patrol path.
         case followBadPatrolPath
 
         // Return to a given position on a patrol path.
@@ -29,24 +29,24 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
 
     // MARK: Properties
     
-    /// Indicates whether or not the `TaskBot` is currently in a "good" (benevolent) or "bad" (adversarial) state.
+    /// Indicates whether or not the `Robot` is currently in a "good" (benevolent) or "bad" (adversarial) state.
     var isGood: Bool {
         didSet {
             // Do nothing if the value hasn't changed.
             guard isGood != oldValue else { return }
             
             // Get the components we will need to access in response to the value changing.
-            guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else { fatalError("TaskBots must have an intelligence component.") }
-            guard let animationComponent = component(ofType: AnimationComponent.self) else { fatalError("TaskBots must have an animation component.") }
-            guard let chargeComponent = component(ofType: ChargeComponent.self) else { fatalError("TaskBots must have a charge component.") }
+            guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else { fatalError("Robots must have an intelligence component.") }
+            guard let animationComponent = component(ofType: AnimationComponent.self) else { fatalError("Robots must have an animation component.") }
+            guard let chargeComponent = component(ofType: ChargeComponent.self) else { fatalError("Robots must have a charge component.") }
 
-            // Update the `TaskBot`'s speed and acceleration to suit the new value of `isGood`.
-            agent.maxSpeed = GameplayConfiguration.TaskBot.maximumSpeedForIsGood(isGood: isGood)
-            agent.maxAcceleration = GameplayConfiguration.TaskBot.maximumAcceleration
+            // Update the `Robot`'s speed and acceleration to suit the new value of `isGood`.
+            agent.maxSpeed = GameplayConfiguration.Robot.maximumSpeedForIsGood(isGood: isGood)
+            agent.maxAcceleration = GameplayConfiguration.Robot.maximumAcceleration
 
             if isGood {
                 /*
-                    The `TaskBot` just turned from "bad" to "good".
+                    The `Robot` just turned from "bad" to "good".
                     Set its mandate to `.ReturnToPositionOnPath` for the closest point on its "good" patrol path.
                 */
                 let closestPointOnGoodPath = closestPointOnPath(path: goodPathPoints)
@@ -57,8 +57,8 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
                     intelligenceComponent.stateMachine.enter(FlyingBotBlastState.self)
                 }
                 else {
-                    // Make sure the `TaskBot`s state is `TaskBotAgentControlledState` so that it follows its mandate.
-                    intelligenceComponent.stateMachine.enter(TaskBotAgentControlledState.self)
+                    // Make sure the `Robot`s state is `RobotAgentControlledState` so that it follows its mandate.
+                    intelligenceComponent.stateMachine.enter(RobotAgentControlledState.self)
                 }
                 
                 // Update the animation component to use the "good" animations.
@@ -69,9 +69,9 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
             }
             else {
                 /*
-                    The `TaskBot` just turned from "good" to "bad".
+                    The `Robot` just turned from "good" to "bad".
                     Default to a `.ReturnToPositionOnPath` mandate for the closest point on its "bad" patrol path.
-                    This may be overridden by a `.HuntAgent` mandate when the `TaskBot`'s rules are next evaluated.
+                    This may be overridden by a `.HuntAgent` mandate when the `Robot`'s rules are next evaluated.
                 */
                 let closestPointOnBadPath = closestPointOnPath(path: badPathPoints)
                 mandate = .returnToPositionOnPath(float2(closestPointOnBadPath))
@@ -83,23 +83,23 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
                 chargeComponent.charge = chargeComponent.maximumCharge
                 
                 // Enter the "zapped" state.
-                intelligenceComponent.stateMachine.enter(TaskBotZappedState.self)
+                intelligenceComponent.stateMachine.enter(RobotZappedState.self)
             }
         }
     }
     
-    /// The aim that the `TaskBot` is currently trying to achieve.
-    var mandate: TaskBotMandate
+    /// The aim that the `Robot` is currently trying to achieve.
+    var mandate: RobotMandate
     
-    /// The points for the path that the `TaskBot` should patrol when "good" and not hunting.
+    /// The points for the path that the `Robot` should patrol when "good" and not hunting.
     var goodPathPoints: [CGPoint]
 
-    /// The points for the path that the `TaskBot` should patrol when "bad" and not hunting.
+    /// The points for the path that the `Robot` should patrol when "bad" and not hunting.
     var badPathPoints: [CGPoint]
 
-    /// The appropriate `GKBehavior` for the `TaskBot`, based on its current `mandate`.
+    /// The appropriate `GKBehavior` for the `Robot`, based on its current `mandate`.
     var behaviorForCurrentMandate: GKBehavior {
-        // Return an empty behavior if this `TaskBot` is not yet in a `LevelScene`.
+        // Return an empty behavior if this `Robot` is not yet in a `LevelScene`.
         guard let levelScene = component(ofType: RenderComponent.self)?.node.scene as? LevelScene else {
             return GKBehavior()
         }
@@ -115,21 +115,21 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         switch mandate {
             case .followGoodPatrolPath, .followBadPatrolPath:
                 let pathPoints = isGood ? goodPathPoints : badPathPoints
-                radius = GameplayConfiguration.TaskBot.patrolPathRadius
-                agentBehavior = TaskBotBehavior.behavior(forAgent: agent, patrollingPathWithPoints: pathPoints, pathRadius: radius, inScene: levelScene)
+                radius = GameplayConfiguration.Robot.patrolPathRadius
+                agentBehavior = RobotBehavior.behavior(forAgent: agent, patrollingPathWithPoints: pathPoints, pathRadius: radius, inScene: levelScene)
                 debugPathPoints = pathPoints
                 // Patrol paths are always closed loops, so the debug drawing of the path should cycle back round to the start.
                 debugPathShouldCycle = true
                 debugColor = isGood ? SKColor.green : SKColor.purple
             
             case let .huntAgent(targetAgent):
-                radius = GameplayConfiguration.TaskBot.huntPathRadius
-                (agentBehavior, debugPathPoints) = TaskBotBehavior.behaviorAndPathPoints(forAgent: agent, huntingAgent: targetAgent, pathRadius: radius, inScene: levelScene)
+                radius = GameplayConfiguration.Robot.huntPathRadius
+                (agentBehavior, debugPathPoints) = RobotBehavior.behaviorAndPathPoints(forAgent: agent, huntingAgent: targetAgent, pathRadius: radius, inScene: levelScene)
                 debugColor = SKColor.red
 
             case let .returnToPositionOnPath(position):
-                radius = GameplayConfiguration.TaskBot.returnToPatrolPathRadius
-                (agentBehavior, debugPathPoints) = TaskBotBehavior.behaviorAndPathPoints(forAgent: agent, returningToPoint: position, pathRadius: radius, inScene: levelScene)
+                radius = GameplayConfiguration.Robot.returnToPatrolPathRadius
+                (agentBehavior, debugPathPoints) = RobotBehavior.behaviorAndPathPoints(forAgent: agent, returningToPoint: position, pathRadius: radius, inScene: levelScene)
                 debugColor = SKColor.yellow
         }
 
@@ -143,82 +143,82 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         return agentBehavior
     }
     
-    /// The animations to use when a `TaskBot` is in its "good" state.
+    /// The animations to use when a `Robot` is in its "good" state.
     var goodAnimations: [AnimationState: [CompassDirection: Animation]] {
         fatalError("goodAnimations must be overridden in subclasses")
     }
     
-    /// The animations to use when a `TaskBot` is in its "bad" state.
+    /// The animations to use when a `Robot` is in its "bad" state.
     var badAnimations: [AnimationState: [CompassDirection: Animation]] {
         fatalError("badAnimations must be overridden in subclasses")
     }
     
-    /// The `GKAgent` associated with this `TaskBot`.
-    var agent: TaskBotAgent {
-        guard let agent = component(ofType: TaskBotAgent.self) else { fatalError("A TaskBot entity must have a GKAgent2D component.") }
+    /// The `GKAgent` associated with this `Robot`.
+    var agent: RobotAgent {
+        guard let agent = component(ofType: RobotAgent.self) else { fatalError("A Robot entity must have a GKAgent2D component.") }
         return agent
     }
 
-    /// The `RenderComponent` associated with this `TaskBot`.
+    /// The `RenderComponent` associated with this `Robot`.
     var renderComponent: RenderComponent {
-        guard let renderComponent = component(ofType: RenderComponent.self) else { fatalError("A TaskBot must have an RenderComponent.") }
+        guard let renderComponent = component(ofType: RenderComponent.self) else { fatalError("A Robot must have an RenderComponent.") }
         return renderComponent
     }
     
-    /// Used to determine the location on the `TaskBot` where contact with the debug beam occurs.
+    /// Used to determine the location on the `Robot` where contact with the debug beam occurs.
     var beamTargetOffset = CGPoint.zero
     
-    /// Used to hang shapes representing the current path for the `TaskBot`.
+    /// Used to hang shapes representing the current path for the `Robot`.
     var debugNode = SKNode()
     
     // MARK: Initializers
     
     required init(isGood: Bool, goodPathPoints: [CGPoint], badPathPoints: [CGPoint]) {
-        // Whether or not the `TaskBot` is "good" when first created.
+        // Whether or not the `Robot` is "good" when first created.
         self.isGood = isGood
 
-        // The locations of the points that define the `TaskBot`'s "good" and "bad" patrol paths.
+        // The locations of the points that define the `Robot`'s "good" and "bad" patrol paths.
         self.goodPathPoints = goodPathPoints
         self.badPathPoints = badPathPoints
         
         /*
-            A `TaskBot`'s initial mandate is always to patrol.
-            Because a `TaskBot` is positioned at the appropriate path's start point when the level is created,
+            A `Robot`'s initial mandate is always to patrol.
+            Because a `Robot` is positioned at the appropriate path's start point when the level is created,
             there is no need for it to pathfind to the start of its path, and it can patrol immediately.
         */
         mandate = isGood ? .followGoodPatrolPath : .followBadPatrolPath
 
         super.init()
 
-        // Create a `TaskBotAgent` to represent this `TaskBot` in a steering physics simulation.
-        let agent = TaskBotAgent()
+        // Create a `RobotAgent` to represent this `Robot` in a steering physics simulation.
+        let agent = RobotAgent()
         agent.delegate = self
         
         // Configure the agent's characteristics for the steering physics simulation.
-        agent.maxSpeed = GameplayConfiguration.TaskBot.maximumSpeedForIsGood(isGood: isGood)
-        agent.maxAcceleration = GameplayConfiguration.TaskBot.maximumAcceleration
-        agent.mass = GameplayConfiguration.TaskBot.agentMass
-        agent.radius = GameplayConfiguration.TaskBot.agentRadius
+        agent.maxSpeed = GameplayConfiguration.Robot.maximumSpeedForIsGood(isGood: isGood)
+        agent.maxAcceleration = GameplayConfiguration.Robot.maximumAcceleration
+        agent.mass = GameplayConfiguration.Robot.agentMass
+        agent.radius = GameplayConfiguration.Robot.agentRadius
         agent.behavior = GKBehavior()
         
         /*
             `GKAgent2D` is a `GKComponent` subclass.
-            Add it to the `TaskBot` entity's list of components so that it will be updated
+            Add it to the `Robot` entity's list of components so that it will be updated
             on each component update cycle.
         */
         addComponent(agent)
 
-        // Create and add a rules component to encapsulate all of the rules that can affect a `TaskBot`'s behavior.
+        // Create and add a rules component to encapsulate all of the rules that can affect a `Robot`'s behavior.
         let rulesComponent = RulesComponent(rules: [
             PlayerNearRule(),
             PlayerMediumRule(),
             PlayerFarRule(),
-            GoodTaskBotNearRule(),
-            GoodTaskBotMediumRule(),
-            GoodTaskBotFarRule(),
-            BadTaskBotPercentageLowRule(),
-            BadTaskBotPercentageMediumRule(),
-            BadTaskBotPercentageHighRule()
+            GoodRobotNearRule(),
+            GoodRobotMediumRule(),
+            GoodRobotFarRule(),
+            BadRobotPercentageLowRule(),
+            BadRobotPercentageMediumRule(),
+            BadRobotPercentageHighRule()
         ])
         addComponent(rulesComponent)
         rulesComponent.delegate = self
@@ -237,25 +237,25 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
             Because of this, the agent's position and rotation in the scene
             may have values that are not valid in the SpriteKit physics simulation.
             For example, the agent may have moved into a position that is not allowed
-            by interactions between the `TaskBot`'s physics body and the level's scenery.
+            by interactions between the `Robot`'s physics body and the level's scenery.
             To counter this, set the agent's position and rotation to match
-            the `TaskBot` position and orientation before the agent calculates
+            the `Robot` position and orientation before the agent calculates
             its steering physics update.
         */
         updateAgentPositionToMatchNodePosition()
-        updateAgentRotationToMatchTaskBotOrientation()
+        updateAgentRotationToMatchRobotOrientation()
     }
     
     func agentDidUpdate(_: GKAgent) {
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else { return }
         guard let orientationComponent = component(ofType: OrientationComponent.self) else { return }
         
-        if intelligenceComponent.stateMachine.currentState is TaskBotAgentControlledState {
+        if intelligenceComponent.stateMachine.currentState is RobotAgentControlledState {
             
-            // `TaskBot`s always move in a forward direction when they are agent-controlled.
+            // `Robot`s always move in a forward direction when they are agent-controlled.
             component(ofType: AnimationComponent.self)?.requestedAnimationState = .walkForward
             
-            // When the `TaskBot` is agent-controlled, the node position follows the agent position.
+            // When the `Robot` is agent-controlled, the node position follows the agent position.
             updateNodePositionToMatchAgentPosition()
             
             // If the agent has a velocity, the `zRotation` should be the arctangent of the agent's velocity. Otherwise use the agent's `rotation` value.
@@ -274,11 +274,11 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         }
         else {
             /*
-                When the `TaskBot` is not agent-controlled, the agent position
-                and rotation follow the node position and `TaskBot` orientation.
+                When the `Robot` is not agent-controlled, the agent position
+                and rotation follow the node position and `Robot` orientation.
             */
             updateAgentPositionToMatchNodePosition()
-            updateAgentRotationToMatchTaskBotOrientation()
+            updateAgentRotationToMatchRobotOrientation()
         }
     }
     
@@ -287,43 +287,43 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
     func rulesComponent(rulesComponent: RulesComponent, didFinishEvaluatingRuleSystem ruleSystem: GKRuleSystem) {
         let state = ruleSystem.state["snapshot"] as! EntitySnapshot
         
-        // Adjust the `TaskBot`'s `mandate` based on the result of evaluating the rules.
+        // Adjust the `Robot`'s `mandate` based on the result of evaluating the rules.
         
-        // A series of situations in which we prefer this `TaskBot` to hunt the player.
+        // A series of situations in which we prefer this `Robot` to hunt the player.
         let huntPlayerRaw = [
-            // "Number of bad TaskBots is high" AND "Player is nearby".
+            // "Number of bad Robots is high" AND "Player is nearby".
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageHigh.rawValue as AnyObject,
+                Fact.badRobotPercentageHigh.rawValue as AnyObject,
                 Fact.playerBotNear.rawValue as AnyObject
             ]),
             
             /*
-                There are already a lot of bad `TaskBot`s on the level, and the
+                There are already a lot of bad `Robot`s on the level, and the
                 player is nearby, so hunt the player.
             */
             
-            // "Number of bad `TaskBot`s is medium" AND "Player is nearby".
+            // "Number of bad `Robot`s is medium" AND "Player is nearby".
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageMedium.rawValue as AnyObject,
+                Fact.badRobotPercentageMedium.rawValue as AnyObject,
                 Fact.playerBotNear.rawValue as AnyObject
             ]),
             /*
-                There are already a reasonable number of bad `TaskBots` on the level,
+                There are already a reasonable number of bad `Robots` on the level,
                 and the player is nearby, so hunt the player.
             */
             
             /*
-                "Number of bad TaskBots is high" AND "Player is at medium proximity"
-                AND "nearest good `TaskBot` is at medium proximity".
+                "Number of bad Robots is high" AND "Player is at medium proximity"
+                AND "nearest good `Robot` is at medium proximity".
             */
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageHigh.rawValue as AnyObject,
+                Fact.badRobotPercentageHigh.rawValue as AnyObject,
                 Fact.playerBotMedium.rawValue as AnyObject,
-                Fact.goodTaskBotMedium.rawValue as AnyObject
+                Fact.goodRobotMedium.rawValue as AnyObject
             ]),
             /* 
-                There are already a lot of bad `TaskBot`s on the level, so even though
-                both the player and the nearest good TaskBot are at medium proximity, 
+                There are already a lot of bad `Robot`s on the level, so even though
+                both the player and the nearest good Robot are at medium proximity, 
                 prefer the player for hunting.
             */
         ]
@@ -331,80 +331,80 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         // Find the maximum of the minima from above.
         let huntPlayer = huntPlayerRaw.reduce(0.0, max)
 
-        // A series of situations in which we prefer this `TaskBot` to hunt the nearest "good" TaskBot.
-        let huntTaskBotRaw = [
+        // A series of situations in which we prefer this `Robot` to hunt the nearest "good" Robot.
+        let huntRobotRaw = [
             
-            // "Number of bad TaskBots is low" AND "Nearest good `TaskBot` is nearby".
+            // "Number of bad Robots is low" AND "Nearest good `Robot` is nearby".
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageLow.rawValue as AnyObject,
-                Fact.goodTaskBotNear.rawValue as AnyObject
+                Fact.badRobotPercentageLow.rawValue as AnyObject,
+                Fact.goodRobotNear.rawValue as AnyObject
             ]),
             /*
-                There are not many bad `TaskBot`s on the level, and a good `TaskBot`
-                is nearby, so hunt the `TaskBot`.
+                There are not many bad `Robot`s on the level, and a good `Robot`
+                is nearby, so hunt the `Robot`.
             */
 
-            // "Number of bad TaskBots is medium" AND "Nearest good TaskBot is nearby".
+            // "Number of bad Robots is medium" AND "Nearest good Robot is nearby".
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageMedium.rawValue as AnyObject,
-                Fact.goodTaskBotNear.rawValue as AnyObject
+                Fact.badRobotPercentageMedium.rawValue as AnyObject,
+                Fact.goodRobotNear.rawValue as AnyObject
             ]),
             /* 
-                There are a reasonable number of `TaskBot`s on the level, but a good
-                `TaskBot` is nearby, so hunt the `TaskBot`.
+                There are a reasonable number of `Robot`s on the level, but a good
+                `Robot` is nearby, so hunt the `Robot`.
             */
 
             /*
-                "Number of bad TaskBots is low" AND "Player is at medium proximity"
-                AND "Nearest good TaskBot is at medium proximity".
+                "Number of bad Robots is low" AND "Player is at medium proximity"
+                AND "Nearest good Robot is at medium proximity".
             */
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageLow.rawValue as AnyObject,
+                Fact.badRobotPercentageLow.rawValue as AnyObject,
                 Fact.playerBotMedium.rawValue as AnyObject,
-                Fact.goodTaskBotMedium.rawValue as AnyObject
+                Fact.goodRobotMedium.rawValue as AnyObject
             ]),
             /*
-                There are not many bad `TaskBot`s on the level, so even though both
-                the player and the nearest good `TaskBot` are at medium proximity, 
-                prefer the nearest good `TaskBot` for hunting.
+                There are not many bad `Robot`s on the level, so even though both
+                the player and the nearest good `Robot` are at medium proximity, 
+                prefer the nearest good `Robot` for hunting.
             */
 
             /*
-                "Number of bad `TaskBot`s is medium" AND "Player is far away" AND
-                "Nearest good `TaskBot` is at medium proximity".
+                "Number of bad `Robot`s is medium" AND "Player is far away" AND
+                "Nearest good `Robot` is at medium proximity".
             */
             ruleSystem.minimumGrade(forFacts: [
-                Fact.badTaskBotPercentageMedium.rawValue as AnyObject,
+                Fact.badRobotPercentageMedium.rawValue as AnyObject,
                 Fact.playerBotFar.rawValue as AnyObject,
-                Fact.goodTaskBotMedium.rawValue as AnyObject
+                Fact.goodRobotMedium.rawValue as AnyObject
             ]),
             /*
-                There are a reasonable number of bad `TaskBot`s on the level, the
-                player is far away, and the nearest good `TaskBot` is at medium
-                proximity, so prefer the nearest good `TaskBot` for hunting.
+                There are a reasonable number of bad `Robot`s on the level, the
+                player is far away, and the nearest good `Robot` is at medium
+                proximity, so prefer the nearest good `Robot` for hunting.
             */
         ]
 
         // Find the maximum of the minima from above.
-        let huntTaskBot = huntTaskBotRaw.reduce(0.0, max)
+        let huntRobot = huntRobotRaw.reduce(0.0, max)
         
-        if huntPlayer >= huntTaskBot && huntPlayer > 0.0 {
-            // The rules provided greater motivation to hunt the Player. Ignore any motivation to hunt the nearest good TaskBot.
+        if huntPlayer >= huntRobot && huntPlayer > 0.0 {
+            // The rules provided greater motivation to hunt the Player. Ignore any motivation to hunt the nearest good Robot.
             guard let playerBotAgent = state.playerBotTarget?.target.agent else { return }
             mandate = .huntAgent(playerBotAgent)
         }
-        else if huntTaskBot > huntPlayer {
-            // The rules provided greater motivation to hunt the nearest good TaskBot. Ignore any motivation to hunt the Player.
-            mandate = .huntAgent(state.nearestGoodTaskBotTarget!.target.agent)
+        else if huntRobot > huntPlayer {
+            // The rules provided greater motivation to hunt the nearest good Robot. Ignore any motivation to hunt the Player.
+            mandate = .huntAgent(state.nearestGoodRobotTarget!.target.agent)
         }
         else {
             // The rules provided no motivation to hunt, so patrol in the "bad" state.
             switch mandate {
                 case .followBadPatrolPath:
-                    // The `TaskBot` is already on its "bad" patrol path, so no update is needed.
+                    // The `Robot` is already on its "bad" patrol path, so no update is needed.
                     break
                 default:
-                    // Send the `TaskBot` to the closest point on its "bad" patrol path.
+                    // Send the `Robot` to the closest point on its "bad" patrol path.
                     let closestPointOnBadPath = closestPointOnPath(path: badPathPoints)
                     mandate = .returnToPositionOnPath(float2(closestPointOnBadPath))
             }
@@ -419,7 +419,7 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
 
     // MARK: Convenience
     
-    /// The direct distance between this `TaskBot`'s agent and another agent in the scene.
+    /// The direct distance between this `Robot`'s agent and another agent in the scene.
     func distanceToAgent(otherAgent: GKAgent2D) -> Float {
         let deltaX = agent.position.x - otherAgent.position.x
         let deltaY = agent.position.y - otherAgent.position.y
@@ -435,7 +435,7 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
     }
     
     func closestPointOnPath(path: [CGPoint]) -> CGPoint {
-        // Find the closest point to the `TaskBot`.
+        // Find the closest point to the `Robot`.
         let taskBotPosition = agent.position
         let closestPoint = path.min {
             return distance_squared(taskBotPosition, float2($0)) < distance_squared(taskBotPosition, float2($1))
@@ -444,27 +444,27 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
         return closestPoint!
     }
     
-    /// Sets the `TaskBot` `GKAgent` position to match the node position (plus an offset).
+    /// Sets the `Robot` `GKAgent` position to match the node position (plus an offset).
     func updateAgentPositionToMatchNodePosition() {
         // `renderComponent` is a computed property. Declare a local version so we don't compute it multiple times.
         let renderComponent = self.renderComponent
         
-        let agentOffset = GameplayConfiguration.TaskBot.agentOffset
+        let agentOffset = GameplayConfiguration.Robot.agentOffset
         agent.position = float2(x: Float(renderComponent.node.position.x + agentOffset.x), y: Float(renderComponent.node.position.y + agentOffset.y))
     }
     
-    /// Sets the `TaskBot` `GKAgent` rotation to match the `TaskBot`'s orientation.
-    func updateAgentRotationToMatchTaskBotOrientation() {
+    /// Sets the `Robot` `GKAgent` rotation to match the `Robot`'s orientation.
+    func updateAgentRotationToMatchRobotOrientation() {
         guard let orientationComponent = component(ofType: OrientationComponent.self) else { return }
         agent.rotation = Float(orientationComponent.zRotation)
     }
     
-    /// Sets the `TaskBot` node position to match the `GKAgent` position (minus an offset).
+    /// Sets the `Robot` node position to match the `GKAgent` position (minus an offset).
     func updateNodePositionToMatchAgentPosition() {
         // `agent` is a computed property. Declare a local version of its property so we don't compute it multiple times.
         let agentPosition = CGPoint(agent.position)
         
-        let agentOffset = GameplayConfiguration.TaskBot.agentOffset
+        let agentOffset = GameplayConfiguration.Robot.agentOffset
         renderComponent.node.position = CGPoint(x: agentPosition.x - agentOffset.x, y: agentPosition.y - agentOffset.y)
     }
     
@@ -516,16 +516,16 @@ class TaskBot: GKEntity, ContactNotifiableType, GKAgentDelegate, RulesComponentD
     // MARK: Shared Assets
     
     class func loadSharedAssets() {
-        ColliderType.definedCollisions[.TaskBot] = [
+        ColliderType.definedCollisions[.Robot] = [
             .Obstacle,
             .Player,
-            .TaskBot
+            .Robot
         ]
         
-        ColliderType.requestedContactNotifications[.TaskBot] = [
+        ColliderType.requestedContactNotifications[.Robot] = [
             .Obstacle,
             .Player,
-            .TaskBot
+            .Robot
         ]
     }
 }

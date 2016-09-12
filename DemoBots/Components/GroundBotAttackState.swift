@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    The state of a `GroundBot` when actively charging toward the `Player` or another `TaskBot`.
+    The state of a `GroundBot` when actively charging toward the `Player` or another `Robot`.
 */
 
 import SpriteKit
@@ -86,7 +86,7 @@ class GroundBotAttackState: GKState {
         
         let currentDistanceToTarget = hypot(dx, dy)
         if currentDistanceToTarget < GameplayConfiguration.GroundBot.attackEndProximity {
-            _ = stateMachine?.enter(TaskBotAgentControlledState.self)
+            _ = stateMachine?.enter(RobotAgentControlledState.self)
             return
         }
 
@@ -95,7 +95,7 @@ class GroundBotAttackState: GKState {
             its target because it has been knocked off course.
         */
         if currentDistanceToTarget > lastDistanceToTarget {
-            _ = stateMachine?.enter(TaskBotAgentControlledState.self)
+            _ = stateMachine?.enter(RobotAgentControlledState.self)
             return
         }
         
@@ -105,7 +105,7 @@ class GroundBotAttackState: GKState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is TaskBotAgentControlledState.Type, is TaskBotZappedState.Type:
+            case is RobotAgentControlledState.Type, is RobotZappedState.Type:
                 return true
                 
             default:
@@ -133,8 +133,8 @@ class GroundBotAttackState: GKState {
             // If the other entity is a `Player` that isn't powered down, reduce its charge.
             chargeComponent.loseCharge(chargeToLose: GameplayConfiguration.GroundBot.chargeLossPerContact)
         }
-        else if let taskBot = entity as? TaskBot, taskBot.isGood {
-            // If the other entity is a good `TaskBot`, turn it bad.
+        else if let taskBot = entity as? Robot, taskBot.isGood {
+            // If the other entity is a good `Robot`, turn it bad.
             taskBot.isGood = false
         }
     }

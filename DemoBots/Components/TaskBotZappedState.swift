@@ -3,29 +3,29 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A state used to represent the `TaskBot` when being zapped by a `Player` attack.
+    A state used to represent the `Robot` when being zapped by a `Player` attack.
 */
 
 import SpriteKit
 import GameplayKit
 
-class TaskBotZappedState: GKState {
+class RobotZappedState: GKState {
     // MARK: Properties
     
-    unowned var entity: TaskBot
+    unowned var entity: Robot
     
-    /// The amount of time the `TaskBot` has been in its "zapped" state.
+    /// The amount of time the `Robot` has been in its "zapped" state.
     var elapsedTime: TimeInterval = 0.0
     
     /// The `AnimationComponent` associated with the `entity`.
     var animationComponent: AnimationComponent {
-        guard let animationComponent = entity.component(ofType: AnimationComponent.self) else { fatalError("A TaskBotZappedState's entity must have an AnimationComponent.") }
+        guard let animationComponent = entity.component(ofType: AnimationComponent.self) else { fatalError("A RobotZappedState's entity must have an AnimationComponent.") }
         return animationComponent
     }
 
     // MARK: Initializers
     
-    required init(entity: TaskBot) {
+    required init(entity: Robot) {
         self.entity = entity
     }
     
@@ -37,7 +37,7 @@ class TaskBotZappedState: GKState {
         // Reset the elapsed time.
         elapsedTime = 0.0
 
-        // Check if the `TaskBot` has a movement component. (`GroundBot`s do, `FlyingBot`s do not.)
+        // Check if the `Robot` has a movement component. (`GroundBot`s do, `FlyingBot`s do not.)
         if let movementComponent = entity.component(ofType: MovementComponent.self) {
             // Clear any pending movement.
             movementComponent.nextTranslation = nil
@@ -45,7 +45,7 @@ class TaskBotZappedState: GKState {
 
         }
             
-        // Request the "zapped" animation for this `TaskBot`.
+        // Request the "zapped" animation for this `Robot`.
         animationComponent.requestedAnimationState = .zapped
     }
 
@@ -55,26 +55,26 @@ class TaskBotZappedState: GKState {
         elapsedTime += seconds
         
         /*
-            If the `TaskBot` has become "good" or has been in the current state long enough,
-            re-enter `TaskBotAgentControlledState`.
+            If the `Robot` has become "good" or has been in the current state long enough,
+            re-enter `RobotAgentControlledState`.
         */
-        if entity.isGood || elapsedTime >= GameplayConfiguration.TaskBot.zappedStateDuration {
-            _ = stateMachine?.enter(TaskBotAgentControlledState.self)
+        if entity.isGood || elapsedTime >= GameplayConfiguration.Robot.zappedStateDuration {
+            _ = stateMachine?.enter(RobotAgentControlledState.self)
         }
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is TaskBotZappedState.Type:
+            case is RobotZappedState.Type:
                 /*
-                    Reset the elapsed time the `taskBot` has been in `TaskBotZappedState`. This ensures
+                    Reset the elapsed time the `taskBot` has been in `RobotZappedState`. This ensures
                     there is a delay from when a `taskBot` stops being zapped to when it becomes
                     agent controlled.
                 */
                 elapsedTime = 0.0
                 return false
             
-            case is TaskBotAgentControlledState.Type, is FlyingBotBlastState.Type:
+            case is RobotAgentControlledState.Type, is FlyingBotBlastState.Type:
                 return true
                 
             default:

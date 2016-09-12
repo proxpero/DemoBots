@@ -11,7 +11,7 @@ import GameplayKit
 
 /// The names and z-positions of each layer in a level's world.
 enum WorldLayer: CGFloat {
-    // The zPosition offset to use per character (`Player` or `TaskBot`).
+    // The zPosition offset to use per character (`Player` or `Robot`).
     static let zSpacePerCharacter: CGFloat = 100
     
     // Specifying `AboveCharacters` as 1000 gives room for 9 enemies on a level.
@@ -74,7 +74,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
   
     // MARK: Pathfinding
     
-    let graph = GKObstacleGraph(obstacles: [], bufferRadius: GameplayConfiguration.TaskBot.pathfindingGraphBufferRadius)
+    let graph = GKObstacleGraph(obstacles: [], bufferRadius: GameplayConfiguration.Robot.pathfindingGraphBufferRadius)
   
     lazy var obstacleSpriteNodes: [SKSpriteNode] = self["world/obstacles/*"] as! [SKSpriteNode]
   
@@ -107,7 +107,7 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
     // MARK: Component Systems
     
     lazy var componentSystems: [GKComponentSystem] = {
-        let agentSystem = GKComponentSystem(componentClass: TaskBotAgent.self)
+        let agentSystem = GKComponentSystem(componentClass: RobotAgent.self)
         let animationSystem = GKComponentSystem(componentClass: AnimationComponent.self)
         let chargeSystem = GKComponentSystem(componentClass: ChargeComponent.self)
         let intelligenceSystem = GKComponentSystem(componentClass: IntelligenceComponent.self)
@@ -175,15 +175,15 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
             }
         }
         
-        // Iterate over the `TaskBot` configurations for this level, and create each `TaskBot`.
+        // Iterate over the `Robot` configurations for this level, and create each `Robot`.
         for taskBotConfiguration in levelConfiguration.taskBotConfigurations {
-            let taskBot: TaskBot
+            let taskBot: Robot
 
-            // Find the locations of the nodes that define the `TaskBot`'s "good" and "bad" patrol paths.
+            // Find the locations of the nodes that define the `Robot`'s "good" and "bad" patrol paths.
             let goodPathPoints = nodePointsFromNodeNames(nodeNames: taskBotConfiguration.goodPathNodeNames)
             let badPathPoints = nodePointsFromNodeNames(nodeNames: taskBotConfiguration.badPathNodeNames)
             
-            // Create the appropriate type `TaskBot` (ground or flying).
+            // Create the appropriate type `Robot` (ground or flying).
             switch taskBotConfiguration.locomotion {
                 case .flying:
                     taskBot = FlyingBot(isGood: !taskBotConfiguration.startsBad, goodPathPoints: goodPathPoints, badPathPoints: badPathPoints)
@@ -192,21 +192,21 @@ class LevelScene: BaseScene, SKPhysicsContactDelegate {
                     taskBot = GroundBot(isGood: !taskBotConfiguration.startsBad, goodPathPoints: goodPathPoints, badPathPoints: badPathPoints)
             }
             
-            // Set the `TaskBot`'s initial orientation so that it is facing the correct way.
+            // Set the `Robot`'s initial orientation so that it is facing the correct way.
             guard let orientationComponent = taskBot.component(ofType: OrientationComponent.self) else {
                 fatalError("A task bot must have an orientation component to be able to be added to a level")
             }
             orientationComponent.compassDirection = taskBotConfiguration.initialOrientation
 
-            // Set the `TaskBot`'s initial position.
+            // Set the `Robot`'s initial position.
             let taskBotNode = taskBot.renderComponent.node
             taskBotNode.position = taskBot.isGood ? goodPathPoints.first! : badPathPoints.first!
             taskBot.updateAgentPositionToMatchNodePosition()
             
-            // Add the `TaskBot` to the scene and the component systems.
+            // Add the `Robot` to the scene and the component systems.
             addEntity(entity: taskBot)
 
-            // Add the `TaskBot`'s debug drawing node beneath all characters.
+            // Add the `Robot`'s debug drawing node beneath all characters.
             addNode(node: taskBot.debugNode, toWorldLayer: .debug)
         }
         

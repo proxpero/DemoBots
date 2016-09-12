@@ -3,26 +3,26 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A state used to represent the `TaskBot` when its movement is being managed by an `GKAgent`.
+    A state used to represent the `Robot` when its movement is being managed by an `GKAgent`.
 */
 
 import SpriteKit
 import GameplayKit
 
-class TaskBotAgentControlledState: GKState {
+class RobotAgentControlledState: GKState {
     // MARK: Properties
     
-    unowned var entity: TaskBot
+    unowned var entity: Robot
     
-    /// The amount of time that has passed since the `TaskBot` became agent-controlled.
+    /// The amount of time that has passed since the `Robot` became agent-controlled.
     var elapsedTime: TimeInterval = 0.0
     
-    /// The amount of time that has passed since the `TaskBot` last determined an appropriate behavior.
+    /// The amount of time that has passed since the `Robot` last determined an appropriate behavior.
     var timeSinceBehaviorUpdate: TimeInterval = 0.0
     
     // MARK: Initializers
     
-    required init(entity: TaskBot) {
+    required init(entity: Robot) {
         self.entity = entity
     }
     
@@ -39,8 +39,8 @@ class TaskBotAgentControlledState: GKState {
         entity.agent.behavior = entity.behaviorForCurrentMandate
         
         /*
-            `TaskBot`s recover to a full charge if they're hit with the beam but don't become "good".
-            If this `TaskBot` has any charge, restore it to the full amount.
+            `Robot`s recover to a full charge if they're hit with the beam but don't become "good".
+            If this `Robot` has any charge, restore it to the full amount.
         */
         if let chargeComponent = entity.component(ofType: ChargeComponent.self), chargeComponent.hasCharge {
             let chargeToAdd = chargeComponent.maximumCharge - chargeComponent.charge
@@ -56,10 +56,10 @@ class TaskBotAgentControlledState: GKState {
         elapsedTime += seconds
         
         // Check if enough time has passed since the last behavior update, and update the behavior if so.
-        if timeSinceBehaviorUpdate >= GameplayConfiguration.TaskBot.behaviorUpdateWaitDuration {
+        if timeSinceBehaviorUpdate >= GameplayConfiguration.Robot.behaviorUpdateWaitDuration {
 
-            // When a `TaskBot` is returning to its path patrol start, and gets near enough, it should start to patrol.
-            if case let .returnToPositionOnPath(position) = entity.mandate, entity.distanceToPoint(otherPoint: position) <= GameplayConfiguration.TaskBot.thresholdProximityToPatrolPathStartPoint {
+            // When a `Robot` is returning to its path patrol start, and gets near enough, it should start to patrol.
+            if case let .returnToPositionOnPath(position) = entity.mandate, entity.distanceToPoint(otherPoint: position) <= GameplayConfiguration.Robot.thresholdProximityToPatrolPathStartPoint {
                 entity.mandate = entity.isGood ? .followGoodPatrolPath : .followBadPatrolPath
             }
             
@@ -73,7 +73,7 @@ class TaskBotAgentControlledState: GKState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is FlyingBotPreAttackState.Type, is GroundBotRotateToAttackState.Type, is TaskBotZappedState.Type:
+            case is FlyingBotPreAttackState.Type, is GroundBotRotateToAttackState.Type, is RobotZappedState.Type:
                 return true
                 
             default:
@@ -85,8 +85,8 @@ class TaskBotAgentControlledState: GKState {
         super.willExit(to: nextState)
         
         /*
-            The `TaskBot` will no longer be controlled by an agent in the steering simulation
-            when it leaves the `TaskBotAgentControlledState`.
+            The `Robot` will no longer be controlled by an agent in the steering simulation
+            when it leaves the `RobotAgentControlledState`.
             Assign an empty behavior to cancel any active agent control.
         */
         entity.agent.behavior = GKBehavior()

@@ -3,7 +3,7 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A structure that encapsulates the initial configuration of a level in the game, including the initial states and positions of `TaskBot`s. This information is loaded from a property list.
+    A structure that encapsulates the initial configuration of a level in the game, including the initial states and positions of `Robot`s. This information is loaded from a property list.
 */
 
 import Foundation
@@ -13,10 +13,10 @@ struct LevelConfiguration {
     // MARK: Types
     
     /// Encapsulates the starting configuration of a single `GroundBot` or `FlyingBot`.
-    struct TaskBotConfiguration {
+    struct RobotConfiguration {
         // MARK: Properties
 
-        /// The different types of `TaskBot` that can exist in a level.
+        /// The different types of `Robot` that can exist in a level.
         enum Locomotion {
             case ground
             case flying
@@ -24,13 +24,13 @@ struct LevelConfiguration {
         
         let locomotion: Locomotion
         
-        /// The initial orientation of this `TaskBot` when the level is first loaded.
+        /// The initial orientation of this `Robot` when the level is first loaded.
         let initialOrientation: CompassDirection
         
-        /// The names of the nodes for this `TaskBot`'s patrol path when it is "good" and not hunting.
+        /// The names of the nodes for this `Robot`'s patrol path when it is "good" and not hunting.
         let goodPathNodeNames: [String]
 
-        /// The names of the nodes for this `TaskBot`'s patrol path when it is "bad" and not hunting.
+        /// The names of the nodes for this `Robot`'s patrol path when it is "bad" and not hunting.
         let badPathNodeNames: [String]
         
         /// Whether the bot should be in its "bad" state when the level begins.
@@ -66,8 +66,8 @@ struct LevelConfiguration {
     /// The initial orientation of the `Player` when the level is first loaded.
     let initialPlayerOrientation: CompassDirection
 
-    /// The configuration settings for `TaskBots` on this level.
-    let taskBotConfigurations: [TaskBotConfiguration]
+    /// The configuration settings for `Robots` on this level.
+    let taskBotConfigurations: [RobotConfiguration]
     
     /// The file name identifier for this level. Used for loading files and assets.
     let fileName: String
@@ -99,11 +99,11 @@ struct LevelConfiguration {
 
         configurationInfo = NSDictionary(contentsOf: url!) as! [String: AnyObject]
         
-        // Extract the data for every `TaskBot` in this level as an array of `TaskBotConfiguration` values.
+        // Extract the data for every `Robot` in this level as an array of `RobotConfiguration` values.
         let botConfigurations = configurationInfo["taskBotConfigurations"] as! [[String: AnyObject]]
         
-        // Map the array of `TaskBot` configuration dictionaries to an array of `TaskBotConfiguration` instances.
-        taskBotConfigurations = botConfigurations.map { TaskBotConfiguration(botConfigurationInfo: $0) }
+        // Map the array of `Robot` configuration dictionaries to an array of `RobotConfiguration` instances.
+        taskBotConfigurations = botConfigurations.map { RobotConfiguration(botConfigurationInfo: $0) }
         
         initialPlayerOrientation = CompassDirection(string: configurationInfo["initialPlayerOrientation"] as! String)
     }

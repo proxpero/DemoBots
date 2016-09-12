@@ -12,7 +12,7 @@ import GameplayKit
 class FlyingBotBlastState: GKState {
     // MARK: Properties
     
-    unowned var entity: TaskBot
+    unowned var entity: Robot
     
     /// A template emitter node (loaded from file) for the `FlyingBot` "good" attack.
     let templateGoodEmitterNode: SKEmitterNode
@@ -23,7 +23,7 @@ class FlyingBotBlastState: GKState {
     /// The current emitter node (if any) in use in the scene.
     var currentEmitterNode: SKEmitterNode?
 
-    /// The amount of time the `TaskBot` has been in the "blast" state.
+    /// The amount of time the `Robot` has been in the "blast" state.
     var elapsedTime: TimeInterval = 0.0
 
     /// The `AnimationComponent` associated with the `entity`.
@@ -40,7 +40,7 @@ class FlyingBotBlastState: GKState {
 
     // MARK: Initializers
     
-    required init(entity: TaskBot) {
+    required init(entity: Robot) {
         self.entity = entity
 
         // Load and configure the "good" and "bad" template emitter nodes.
@@ -80,7 +80,7 @@ class FlyingBotBlastState: GKState {
         }
         renderComponent.node.addChild(currentEmitterNode!)
 
-        // Request the appropriate "attack" animation for this `TaskBot`.
+        // Request the appropriate "attack" animation for this `Robot`.
         animationComponent.requestedAnimationState = .attack
     }
     
@@ -91,11 +91,11 @@ class FlyingBotBlastState: GKState {
         elapsedTime += seconds
         if elapsedTime >= GameplayConfiguration.FlyingBot.blastDuration {
             // Return to an agent-controlled state if the blast has completed.
-            stateMachine?.enter(TaskBotAgentControlledState.self)
+            stateMachine?.enter(RobotAgentControlledState.self)
             return
         }
         else if elapsedTime < GameplayConfiguration.FlyingBot.blastEffectDuration {
-            // Perform either a "good" or "bad" blast, based on the `TaskBot`'s current state.
+            // Perform either a "good" or "bad" blast, based on the `Robot`'s current state.
             if entity.isGood {
                 performGoodBlast()
             }
@@ -107,7 +107,7 @@ class FlyingBotBlastState: GKState {
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is TaskBotAgentControlledState.Type, is TaskBotZappedState.Type:
+            case is RobotAgentControlledState.Type, is RobotZappedState.Type:
                 return true
             
             default:
@@ -118,16 +118,16 @@ class FlyingBotBlastState: GKState {
     override func willExit(to nextState: GKState) {
         super.willExit(to: nextState)
 
-        // Remove the blast effect emitter node from the `TaskBot` when leaving the blast state.
+        // Remove the blast effect emitter node from the `Robot` when leaving the blast state.
         currentEmitterNode?.removeFromParent()
         currentEmitterNode = nil
     }
     
     // MARK: Convenience
     
-    /// Finds all entities (`Player`s and `TaskBot`s) who are in range of this blast attack.
+    /// Finds all entities (`Player`s and `Robot`s) who are in range of this blast attack.
     func entitiesInRange() -> [GKEntity] {
-        // Retrieve an entity snapshot containing the distances from this `TaskBot` to other entities in the `LevelScene`.
+        // Retrieve an entity snapshot containing the distances from this `Robot` to other entities in the `LevelScene`.
         guard let level = renderComponent.node.scene as? LevelScene else { return [] }
         guard let entitySnapshot = level.entitySnapshotForEntity(entity: entity) else { return [] }
         
@@ -142,17 +142,17 @@ class FlyingBotBlastState: GKState {
         return entitiesInRange
     }
     
-    /// Performs a beneficial "curing" blast that converts any "bad" `TaskBot`s into "good" `TaskBot`s.
+    /// Performs a beneficial "curing" blast that converts any "bad" `Robot`s into "good" `Robot`s.
     func performGoodBlast() {
-        // Filter and map the entities inside the blast radius to an array of `TaskBot`s.
-        let taskBotsInRange = entitiesInRange().flatMap { $0 as? TaskBot }
+        // Filter and map the entities inside the blast radius to an array of `Robot`s.
+        let taskBotsInRange = entitiesInRange().flatMap { $0 as? Robot }
         
-        // Iterate through the `TaskBot`s in range.
+        // Iterate through the `Robot`s in range.
         for taskBot in taskBotsInRange {
-            // Retrieve the current intelligence state for the `TaskBot`.
+            // Retrieve the current intelligence state for the `Robot`.
             guard let currentState = taskBot.component(ofType: IntelligenceComponent.self)?.stateMachine.currentState else { continue }
 
-            // If the entity is a "bad" `TaskBot` that isn't currently attacking, turn it "good".
+            // If the entity is a "bad" `Robot` that isn't currently attacking, turn it "good".
             if taskBot.isGood { continue }
             
             switch currentState {
@@ -165,7 +165,7 @@ class FlyingBotBlastState: GKState {
         }
     }
     
-    /// Performs a "bad" blast that removes charge from the `Player` and turns "good" `TaskBot`s "bad".
+    /// Performs a "bad" blast that removes charge from the `Player` and turns "good" `Robot`s "bad".
     func performBadBlast(withDeltaTime seconds: TimeInterval) {
         // Calculate how much charge `Player`s should lose if hit by this application of the blast attack.
         let chargeToLose = GameplayConfiguration.FlyingBot.blastChargeLossPerSecond * seconds
@@ -179,8 +179,8 @@ class FlyingBotBlastState: GKState {
                 // Decrease the charge of a `Player` if it is in range and not powered down.
                 chargeComponent.loseCharge(chargeToLose: chargeToLose)
             }
-            else if let taskBot = entity as? TaskBot, taskBot.isGood {
-                // Turn a `TaskBot` "bad" if it is in range and "good".
+            else if let taskBot = entity as? Robot, taskBot.isGood {
+                // Turn a `Robot` "bad" if it is in range and "good".
                 taskBot.isGood = false
             }
         }

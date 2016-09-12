@@ -120,7 +120,7 @@ class Player: GKEntity, ChargeComponentDelegate, ResourceLoadableType {
         renderComponent.node.addChild(animationComponent.node)
         animationComponent.shadowNode = shadowComponent.node
         
-        // `BeamComponent` implements the beam that a `Player` fires at "bad" `TaskBot`s.
+        // `BeamComponent` implements the beam that a `Player` fires at "bad" `Robot`s.
         let beamComponent = BeamComponent()
         addComponent(beamComponent)
         
@@ -212,7 +212,7 @@ class Player: GKEntity, ChargeComponentDelegate, ResourceLoadableType {
         
         ColliderType.definedCollisions[.Player] = [
             .Player,
-            .TaskBot,
+            .Robot,
             .Obstacle
         ]
     }

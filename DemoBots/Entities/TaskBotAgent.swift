@@ -3,9 +3,9 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A simple subclass of `GKAgent2D` used by `TaskBot`s.
+    A simple subclass of `GKAgent2D` used by `Robot`s.
 */
 
 import GameplayKit
 
-class TaskBotAgent: GKAgent2D {}
+class RobotAgent: GKAgent2D {}

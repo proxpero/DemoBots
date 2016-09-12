@@ -3,12 +3,12 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    `FuzzyTaskBotRule` is a `GKRule` subclass that asserts a `fact` if and only if its `grade()` function returns a non-zero value. Subclasses for the specific rules used in the game can be found in Rules.swift.
+    `FuzzyRobotRule` is a `GKRule` subclass that asserts a `fact` if and only if its `grade()` function returns a non-zero value. Subclasses for the specific rules used in the game can be found in Rules.swift.
 */
 
 import GameplayKit
 
-class FuzzyTaskBotRule: GKRule {
+class FuzzyRobotRule: GKRule {
     // MARK: Properties
     
     var snapshot: EntitySnapshot!

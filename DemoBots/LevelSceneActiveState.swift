@@ -61,17 +61,17 @@ class LevelSceneActiveState: GKState {
         // Update the displayed time remaining.
         levelScene.timerNode.text = timeRemainingString
         
-        // Check if the `levelScene` contains any bad `TaskBot`s.
-        let allTaskBotsAreGood = !levelScene.entities.contains { entity in
-            if let taskBot = entity as? TaskBot {
+        // Check if the `levelScene` contains any bad `Robot`s.
+        let allRobotsAreGood = !levelScene.entities.contains { entity in
+            if let taskBot = entity as? Robot {
                 return !taskBot.isGood
             }
             
             return false
         }
         
-        if allTaskBotsAreGood {
-            // If all the TaskBots are good, the player has completed the level.
+        if allRobotsAreGood {
+            // If all the Robots are good, the player has completed the level.
             stateMachine?.enter(LevelSceneSuccessState.self)
         }
         else if timeRemaining <= 0.0 {

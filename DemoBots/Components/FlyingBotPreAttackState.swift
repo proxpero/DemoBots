@@ -34,7 +34,7 @@ class FlyingBotPreAttackState: GKState {
     override func didEnter(from previousState: GKState?) {
         super.didEnter(from: previousState)
         
-        // Reset the tracking of how long the `TaskBot` has been in a "pre-attack" state.
+        // Reset the tracking of how long the `Robot` has been in a "pre-attack" state.
         elapsedTime = 0.0
 
         // Request the "attack" animation for this `FlyingBot`.
@@ -44,21 +44,21 @@ class FlyingBotPreAttackState: GKState {
     override func update(deltaTime seconds: TimeInterval) {
         super.update(deltaTime: seconds)
         
-        // Update the time that the `TaskBot` has been in its "pre-attack" state.
+        // Update the time that the `Robot` has been in its "pre-attack" state.
         elapsedTime += seconds
         
         /*
-            If the `TaskBot` has been in its "pre-attack" state for long enough,
+            If the `Robot` has been in its "pre-attack" state for long enough,
             move to the attack state.
         */
-        if elapsedTime >= GameplayConfiguration.TaskBot.preAttackStateDuration {
+        if elapsedTime >= GameplayConfiguration.Robot.preAttackStateDuration {
             stateMachine?.enter(FlyingBotBlastState.self)
         }
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is TaskBotAgentControlledState.Type, is FlyingBotBlastState.Type, is TaskBotZappedState.Type:
+            case is RobotAgentControlledState.Type, is FlyingBotBlastState.Type, is RobotZappedState.Type:
                 return true
             
             default:

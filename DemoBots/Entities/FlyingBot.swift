@@ -3,13 +3,13 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A floating `TaskBot` with a radius blast attack. This `GKEntity` subclass allows for convenient construction of an entity with appropriate `GKComponent` instances.
+    A floating `Robot` with a radius blast attack. This `GKEntity` subclass allows for convenient construction of an entity with appropriate `GKComponent` instances.
 */
 
 import SpriteKit
 import GameplayKit
 
-class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
+class FlyingBot: Robot, ChargeComponentDelegate, ResourceLoadableType {
     /// Loads static resources into memory.
 //    internal static func loadResources(withCompletionHandler completionHandler: @escaping () -> ()) {
 //        <#code#>
@@ -38,7 +38,7 @@ class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
     /// The animations to use when a `FlyingBot` is in its "bad" state.
     static var badAnimations: [AnimationState: [CompassDirection: Animation]]?
 
-    // MARK: TaskBot Properties
+    // MARK: Robot Properties
     
     override var goodAnimations: [AnimationState: [CompassDirection: Animation]] {
         return FlyingBot.goodAnimations!
@@ -86,15 +86,15 @@ class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
         addComponent(animationComponent)
 
         let intelligenceComponent = IntelligenceComponent(states: [
-            TaskBotAgentControlledState(entity: self),
+            RobotAgentControlledState(entity: self),
             FlyingBotPreAttackState(entity: self),
             FlyingBotBlastState(entity: self),
-            TaskBotZappedState(entity: self)
+            RobotZappedState(entity: self)
         ])
         addComponent(intelligenceComponent)
 
-        let physicsBody = SKPhysicsBody(circleOfRadius: GameplayConfiguration.TaskBot.physicsBodyRadius, center: GameplayConfiguration.TaskBot.physicsBodyOffset)
-        let physicsComponent = PhysicsComponent(physicsBody: physicsBody, colliderType: .TaskBot)
+        let physicsBody = SKPhysicsBody(circleOfRadius: GameplayConfiguration.Robot.physicsBodyRadius, center: GameplayConfiguration.Robot.physicsBodyOffset)
+        let physicsComponent = PhysicsComponent(physicsBody: physicsBody, colliderType: .Robot)
         addComponent(physicsComponent)
         
         let chargeComponent = ChargeComponent(charge: initialCharge, maximumCharge: GameplayConfiguration.FlyingBot.maximumCharge)
@@ -125,7 +125,7 @@ class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
 
         var shouldStartAttack = false
         
-        if let otherTaskBot = entity as? TaskBot, otherTaskBot.isGood {
+        if let otherRobot = entity as? Robot, otherRobot.isGood {
             // Contact with good task bot will trigger an attack.
             shouldStartAttack = true
         }
@@ -144,7 +144,7 @@ class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
     func chargeComponentDidLoseCharge(chargeComponent: ChargeComponent) {
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else { return }
         
-        intelligenceComponent.stateMachine.enter(TaskBotZappedState.self)
+        intelligenceComponent.stateMachine.enter(RobotZappedState.self)
         isGood = !chargeComponent.hasCharge
     }
     
@@ -155,7 +155,7 @@ class FlyingBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
     }
     
     static func loadResources(withCompletionHandler completionHandler: @escaping () -> ()) {
-        // Load `TaskBot`s shared assets.
+        // Load `Robot`s shared assets.
         super.loadSharedAssets()
         
         let flyingBotAtlasNames = [

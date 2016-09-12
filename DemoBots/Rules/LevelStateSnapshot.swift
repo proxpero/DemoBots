@@ -17,7 +17,7 @@ struct EntityDistance {
     
 /**
     Stores a snapshot of the state of a level and all of its entities
-    (`Player`s and `TaskBot`s) at a certain point in time.
+    (`Player`s and `Robot`s) at a certain point in time.
 */
 class LevelStateSnapshot {
     // MARK: Properties
@@ -30,9 +30,9 @@ class LevelStateSnapshot {
     /// Initializes a new `LevelStateSnapshot` representing all of the entities in a `LevelScene`.
     init(scene: LevelScene) {
         
-        /// Returns the `GKAgent2D` for a `Player` or `TaskBot`.
+        /// Returns the `GKAgent2D` for a `Player` or `Robot`.
         func agentForEntity(entity: GKEntity) -> GKAgent2D {
-            if let agent = entity.component(ofType: TaskBotAgent.self) {
+            if let agent = entity.component(ofType: RobotAgent.self) {
                 return agent
             }
             else if let playerBot = entity as? Player {
@@ -79,25 +79,25 @@ class LevelStateSnapshot {
             }
         }
         
-        // Determine the number of "good" `TaskBot`s and "bad" `TaskBot`s in the scene.
-        let (goodTaskBots, badTaskBots) = scene.entities.reduce(([], [])) {
+        // Determine the number of "good" `Robot`s and "bad" `Robot`s in the scene.
+        let (goodRobots, badRobots) = scene.entities.reduce(([], [])) {
 
-            (workingArrays: (goodBots: [TaskBot], badBots: [TaskBot]), thisEntity: GKEntity) -> ([TaskBot], [TaskBot]) in
+            (workingArrays: (goodBots: [Robot], badBots: [Robot]), thisEntity: GKEntity) -> ([Robot], [Robot]) in
             
-            // Try to cast this entity as a `TaskBot`, and skip this entity if the cast fails.
-            guard let thisTaskBot = thisEntity as? TaskBot else { return workingArrays }
+            // Try to cast this entity as a `Robot`, and skip this entity if the cast fails.
+            guard let thisRobot = thisEntity as? Robot else { return workingArrays }
                 
-            // Add this `TaskBot` to the appropriate working array based on whether it is "good" or not.
-            if thisTaskBot.isGood {
-                return (workingArrays.goodBots + [thisTaskBot], workingArrays.badBots)
+            // Add this `Robot` to the appropriate working array based on whether it is "good" or not.
+            if thisRobot.isGood {
+                return (workingArrays.goodBots + [thisRobot], workingArrays.badBots)
             }
             else {
-                return (workingArrays.goodBots, workingArrays.badBots + [thisTaskBot])
+                return (workingArrays.goodBots, workingArrays.badBots + [thisRobot])
             }
 
         }
         
-        let badBotPercentage = Float(badTaskBots.count) / Float(goodTaskBots.count + badTaskBots.count)
+        let badBotPercentage = Float(badRobots.count) / Float(goodRobots.count + badRobots.count)
         
         // Create and store an entity snapshot in the `entitySnapshots` dictionary for each entity.
         for entity in scene.entities {
@@ -112,7 +112,7 @@ class LevelStateSnapshot {
 class EntitySnapshot {
     // MARK: Properties
     
-    /// Percentage of `TaskBot`s in the level that are bad.
+    /// Percentage of `Robot`s in the level that are bad.
     let badBotPercentage: Float
     
     /// The factor used to normalize distances between characters for 'fuzzy' logic.
@@ -121,8 +121,8 @@ class EntitySnapshot {
     /// Distance to the `Player` if it is targetable.
     let playerBotTarget: (target: Player, distance: Float)?
     
-    /// The nearest "good" `TaskBot`.
-    let nearestGoodTaskBotTarget: (target: TaskBot, distance: Float)?
+    /// The nearest "good" `Robot`.
+    let nearestGoodRobotTarget: (target: Robot, distance: Float)?
     
     /// A sorted array of distances from this entity to every other entity in the level.
     let entityDistances: [EntityDistance]
@@ -139,27 +139,27 @@ class EntitySnapshot {
         }
         
         var playerBotTarget: (target: Player, distance: Float)?
-        var nearestGoodTaskBotTarget: (target: TaskBot, distance: Float)?
+        var nearestGoodRobotTarget: (target: Robot, distance: Float)?
         
         /*
             Iterate over the sorted `entityDistances` array to find the `Player`
-            (if it is targetable) and the nearest "good" `TaskBot`.
+            (if it is targetable) and the nearest "good" `Robot`.
         */
         for entityDistance in self.entityDistances {
             if let target = entityDistance.target as? Player, playerBotTarget == nil && target.isTargetable {
                 playerBotTarget = (target: target, distance: entityDistance.distance)
             }
-            else if let target = entityDistance.target as? TaskBot, nearestGoodTaskBotTarget == nil && target.isGood {
-                nearestGoodTaskBotTarget = (target: target, distance: entityDistance.distance)
+            else if let target = entityDistance.target as? Robot, nearestGoodRobotTarget == nil && target.isGood {
+                nearestGoodRobotTarget = (target: target, distance: entityDistance.distance)
             }
             
-            // Stop iterating over the array once we have found both the `Player` and the nearest good `TaskBot`.
-            if playerBotTarget != nil && nearestGoodTaskBotTarget != nil {
+            // Stop iterating over the array once we have found both the `Player` and the nearest good `Robot`.
+            if playerBotTarget != nil && nearestGoodRobotTarget != nil {
                 break
             }
         }
         
         self.playerBotTarget = playerBotTarget
-        self.nearestGoodTaskBotTarget = nearestGoodTaskBotTarget
+        self.nearestGoodRobotTarget = nearestGoodRobotTarget
     }
 }

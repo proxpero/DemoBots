@@ -3,13 +3,13 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    A ground-based `TaskBot` with a distance attack. This `GKEntity` subclass allows for convenient construction of an entity with appropriate `GKComponent` instances.
+    A ground-based `Robot` with a distance attack. This `GKEntity` subclass allows for convenient construction of an entity with appropriate `GKComponent` instances.
 */
 
 import SpriteKit
 import GameplayKit
 
-class GroundBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
+class GroundBot: Robot, ChargeComponentDelegate, ResourceLoadableType {
     // MARK: Static Properties
     
     /// The size to use for the `GroundBot`s animation textures.
@@ -33,7 +33,7 @@ class GroundBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
     /// The animations to use when a `GroundBot` is in its "bad" state.
     static var badAnimations: [AnimationState: [CompassDirection: Animation]]?
     
-    // MARK: TaskBot Properties
+    // MARK: Robot Properties
     
     override var goodAnimations: [AnimationState: [CompassDirection: Animation]] {
         return GroundBot.goodAnimations!
@@ -86,16 +86,16 @@ class GroundBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
         addComponent(animationComponent)
 
         let intelligenceComponent = IntelligenceComponent(states: [
-            TaskBotAgentControlledState(entity: self),
+            RobotAgentControlledState(entity: self),
             GroundBotRotateToAttackState(entity: self),
             GroundBotPreAttackState(entity: self),
             GroundBotAttackState(entity: self),
-            TaskBotZappedState(entity: self)
+            RobotZappedState(entity: self)
         ])
         addComponent(intelligenceComponent)
 
-        let physicsBody = SKPhysicsBody(circleOfRadius: GameplayConfiguration.TaskBot.physicsBodyRadius, center: GameplayConfiguration.TaskBot.physicsBodyOffset)
-        let physicsComponent = PhysicsComponent(physicsBody: physicsBody, colliderType: .TaskBot)
+        let physicsBody = SKPhysicsBody(circleOfRadius: GameplayConfiguration.Robot.physicsBodyRadius, center: GameplayConfiguration.Robot.physicsBodyOffset)
+        let physicsComponent = PhysicsComponent(physicsBody: physicsBody, colliderType: .Robot)
         addComponent(physicsComponent)
         
         let chargeComponent = ChargeComponent(charge: initialCharge, maximumCharge: GameplayConfiguration.GroundBot.maximumCharge)
@@ -146,7 +146,7 @@ class GroundBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
         */
         guard let scene = component(ofType: RenderComponent.self)?.node.scene else { return }
         guard let intelligenceComponent = component(ofType: IntelligenceComponent.self) else { return }
-        guard let agentControlledState = intelligenceComponent.stateMachine.currentState as? TaskBotAgentControlledState else { return }
+        guard let agentControlledState = intelligenceComponent.stateMachine.currentState as? RobotAgentControlledState else { return }
 
         // 1) Check if enough time has passed since the `GroundBot`'s last attack.
         guard agentControlledState.elapsedTime >= GameplayConfiguration.GroundBot.delayBetweenAttacks else { return }
@@ -182,7 +182,7 @@ class GroundBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
         isGood = !chargeComponent.hasCharge
         
         if !isGood {
-            intelligenceComponent.stateMachine.enter(TaskBotZappedState.self)
+            intelligenceComponent.stateMachine.enter(RobotZappedState.self)
         }
     }
     
@@ -193,7 +193,7 @@ class GroundBot: TaskBot, ChargeComponentDelegate, ResourceLoadableType {
     }
     
     static func loadResources(withCompletionHandler completionHandler: @escaping () -> ()) {
-        // Load `TaskBot`s shared assets.
+        // Load `Robot`s shared assets.
         super.loadSharedAssets()
 
         let groundBotAtlasNames = [

@@ -20,7 +20,7 @@ class RulesComponent: GKComponent {
     
     var ruleSystem: GKRuleSystem
     
-    /// The amount of time that has passed since the `TaskBot` last evaluated its rules.
+    /// The amount of time that has passed since the `Robot` last evaluated its rules.
     private var timeSinceRulesUpdate: TimeInterval = 0.0
     
     // MARK: Initializers
@@ -45,11 +45,11 @@ class RulesComponent: GKComponent {
     override func update(deltaTime seconds: TimeInterval) {
         timeSinceRulesUpdate += seconds
         
-        if timeSinceRulesUpdate < GameplayConfiguration.TaskBot.rulesUpdateWaitDuration { return }
+        if timeSinceRulesUpdate < GameplayConfiguration.Robot.rulesUpdateWaitDuration { return }
         
         timeSinceRulesUpdate = 0.0
         
-        if let taskBot = entity as? TaskBot,
+        if let taskBot = entity as? Robot,
             let level = taskBot.component(ofType: RenderComponent.self)?.node.scene as? LevelScene,
             let entitySnapshot = level.entitySnapshotForEntity(entity: taskBot),
             !taskBot.isGood {

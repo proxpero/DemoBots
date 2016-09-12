@@ -3,27 +3,27 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    `TaskBotBehavior` is a `GKBehavior` subclass that provides convenience class methods to construct the appropriate goals and behaviors for different `TaskBot` mandates.
+    `RobotBehavior` is a `GKBehavior` subclass that provides convenience class methods to construct the appropriate goals and behaviors for different `Robot` mandates.
 */
 
 import SpriteKit
 import GameplayKit
 
-/// Provides factory methods to create `TaskBot`-specific goals and behaviors.
-class TaskBotBehavior: GKBehavior {
+/// Provides factory methods to create `Robot`-specific goals and behaviors.
+class RobotBehavior: GKBehavior {
     // MARK: Behavior factory methods
     
-    /// Constructs a behavior to hunt a `TaskBot` or `Player` via a computed path.
+    /// Constructs a behavior to hunt a `Robot` or `Player` via a computed path.
     static func behaviorAndPathPoints(forAgent agent: GKAgent2D, huntingAgent target: GKAgent2D, pathRadius: Float, inScene scene: LevelScene) -> (behavior: GKBehavior, pathPoints: [CGPoint]) {
-        let behavior = TaskBotBehavior()
+        let behavior = RobotBehavior()
         
-        // Add basic goals to reach the `TaskBot`'s maximum speed and avoid obstacles.
+        // Add basic goals to reach the `Robot`'s maximum speed and avoid obstacles.
         behavior.addTargetSpeedGoal(speed: agent.maxSpeed)
         behavior.addAvoidObstaclesGoal(forScene: scene)
 
-        // Find any nearby "bad" TaskBots to flock with.
+        // Find any nearby "bad" Robots to flock with.
         let agentsToFlockWith: [GKAgent2D] = scene.entities.flatMap { entity in
-            if let taskBot = entity as? TaskBot, !taskBot.isGood && taskBot.agent !== agent && taskBot.distanceToAgent(otherAgent: agent) <= GameplayConfiguration.Flocking.agentSearchDistanceForFlocking {
+            if let taskBot = entity as? Robot, !taskBot.isGood && taskBot.agent !== agent && taskBot.distanceToAgent(otherAgent: agent) <= GameplayConfiguration.Flocking.agentSearchDistanceForFlocking {
                 return taskBot.agent
             }
 
@@ -31,7 +31,7 @@ class TaskBotBehavior: GKBehavior {
         }
         
         if !agentsToFlockWith.isEmpty {
-            // Add flocking goals for any nearby "bad" `TaskBot`s.
+            // Add flocking goals for any nearby "bad" `Robot`s.
             let separationGoal = GKGoal(toSeparateFrom: agentsToFlockWith, maxDistance: GameplayConfiguration.Flocking.separationRadius, maxAngle: GameplayConfiguration.Flocking.separationAngle)
             behavior.setWeight(GameplayConfiguration.Flocking.separationWeight, for: separationGoal)
             
@@ -42,22 +42,22 @@ class TaskBotBehavior: GKBehavior {
             behavior.setWeight(GameplayConfiguration.Flocking.cohesionWeight, for: cohesionGoal)
         }
 
-        // Add goals to follow a calculated path from the `TaskBot` to its target.
+        // Add goals to follow a calculated path from the `Robot` to its target.
         let pathPoints = behavior.addGoalsToFollowPath(from: agent.position, to: target.position, pathRadius: pathRadius, inScene: scene)
         
         // Return a tuple containing the new behavior, and the found path points for debug drawing.
         return (behavior, pathPoints)
     }
     
-    /// Constructs a behavior to return to the start of a `TaskBot` patrol path.
+    /// Constructs a behavior to return to the start of a `Robot` patrol path.
     static func behaviorAndPathPoints(forAgent agent: GKAgent2D, returningToPoint endPoint: float2, pathRadius: Float, inScene scene: LevelScene) -> (behavior: GKBehavior, pathPoints: [CGPoint]) {
-        let behavior = TaskBotBehavior()
+        let behavior = RobotBehavior()
         
-        // Add basic goals to reach the `TaskBot`'s maximum speed and avoid obstacles.
+        // Add basic goals to reach the `Robot`'s maximum speed and avoid obstacles.
         behavior.addTargetSpeedGoal(speed: agent.maxSpeed)
         behavior.addAvoidObstaclesGoal(forScene: scene)
         
-        // Add goals to follow a calculated path from the `TaskBot` to the start of its patrol path.
+        // Add goals to follow a calculated path from the `Robot` to the start of its patrol path.
         let pathPoints = behavior.addGoalsToFollowPath(from: agent.position, to: endPoint, pathRadius: pathRadius, inScene: scene)
 
         // Return a tuple containing the new behavior, and the found path points for debug drawing.
@@ -66,9 +66,9 @@ class TaskBotBehavior: GKBehavior {
     
     /// Constructs a behavior to patrol a path of points, avoiding obstacles along the way.
     static func behavior(forAgent agent: GKAgent2D, patrollingPathWithPoints patrolPathPoints: [CGPoint], pathRadius: Float, inScene scene: LevelScene) -> GKBehavior {
-        let behavior = TaskBotBehavior()
+        let behavior = RobotBehavior()
         
-        // Add basic goals to reach the `TaskBot`'s maximum speed and avoid obstacles.
+        // Add basic goals to reach the `Robot`'s maximum speed and avoid obstacles.
         behavior.addTargetSpeedGoal(speed: agent.maxSpeed)
         behavior.addAvoidObstaclesGoal(forScene: scene)
         
@@ -98,7 +98,7 @@ class TaskBotBehavior: GKBehavior {
             Add a small fudge factor (+5) to the extrusion radius to make sure 
             we're including all obstacles.
         */
-        let extrusionRadius = Float(GameplayConfiguration.TaskBot.pathfindingGraphBufferRadius) + 5
+        let extrusionRadius = Float(GameplayConfiguration.Robot.pathfindingGraphBufferRadius) + 5
 
         /*
             Return only the polygon obstacles which contain the specified point.
@@ -195,7 +195,7 @@ class TaskBotBehavior: GKBehavior {
     
     /// Adds a goal to avoid all polygon obstacles in the scene.
     private func addAvoidObstaclesGoal(forScene scene: LevelScene) {
-        setWeight(1.0, for: GKGoal(toAvoid: scene.polygonObstacles, maxPredictionTime: GameplayConfiguration.TaskBot.maxPredictionTimeForObstacleAvoidance))
+        setWeight(1.0, for: GKGoal(toAvoid: scene.polygonObstacles, maxPredictionTime: GameplayConfiguration.Robot.maxPredictionTimeForObstacleAvoidance))
     }
     
     /// Adds a goal to attain a target speed.
@@ -206,9 +206,9 @@ class TaskBotBehavior: GKBehavior {
     /// Adds goals to follow and stay on a path.
     private func addFollowAndStayOnPathGoals(for path: GKPath) {
         // The "follow path" goal tries to keep the agent facing in a forward direction when it is on this path.
-        setWeight(1.0, for: GKGoal(toFollow: path, maxPredictionTime: GameplayConfiguration.TaskBot.maxPredictionTimeWhenFollowingPath, forward: true))
+        setWeight(1.0, for: GKGoal(toFollow: path, maxPredictionTime: GameplayConfiguration.Robot.maxPredictionTimeWhenFollowingPath, forward: true))
 
         // The "stay on path" goal tries to keep the agent on the path within the path's radius.
-        setWeight(1.0, for: GKGoal(toStayOn: path, maxPredictionTime: GameplayConfiguration.TaskBot.maxPredictionTimeWhenFollowingPath))
+        setWeight(1.0, for: GKGoal(toStayOn: path, maxPredictionTime: GameplayConfiguration.Robot.maxPredictionTimeWhenFollowingPath))
     }
 }

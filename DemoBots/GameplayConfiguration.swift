@@ -23,7 +23,7 @@ struct GameplayConfiguration {
         /// The maximum number of seconds for which the beam can be fired before recharging.
         static let maximumFireDuration: TimeInterval = 2.0
         
-        /// The amount of charge points the beam drains from `TaskBot`s per second.
+        /// The amount of charge points the beam drains from `Robot`s per second.
         static let chargeLossPerSecond = 90.0
         
         /// The length of time that the beam takes to recharge when it is fully depleted.
@@ -74,20 +74,20 @@ struct GameplayConfiguration {
         static let appearDuration: TimeInterval = 0.50
     }
 
-    struct TaskBot {
-        /// The length of time a `TaskBot` waits before re-evaluating its rules.
+    struct Robot {
+        /// The length of time a `Robot` waits before re-evaluating its rules.
         static let rulesUpdateWaitDuration: TimeInterval = 1.0
 
-        /// The length of time a `TaskBot` waits before re-checking for an appropriate behavior.
+        /// The length of time a `Robot` waits before re-checking for an appropriate behavior.
         static let behaviorUpdateWaitDuration: TimeInterval = 0.25
         
-        /// How close a `TaskBot` has to be to a patrol path start point in order to start patrolling.
+        /// How close a `Robot` has to be to a patrol path start point in order to start patrolling.
         static let thresholdProximityToPatrolPathStartPoint: Float = 50.0
         
-        /// The maximum speed (in points per second) for the `TaskBot` when in its "good" state.
+        /// The maximum speed (in points per second) for the `Robot` when in its "good" state.
         static let maximumSpeedWhenGood: Float = 250.0
 
-        /// The maximum speed (in points per second) for the `TaskBot` when in its "bad" state.
+        /// The maximum speed (in points per second) for the `Robot` when in its "bad" state.
         static let maximumSpeedWhenBad: Float = 120.0
 
         /// A convenience function to return the max speed for a state.
@@ -96,25 +96,25 @@ struct GameplayConfiguration {
         }
         
         /*
-            `maximumAcceleration` is set to a high number to enable the TaskBot to turn very quickly.
-            This ensures that the `TaskBot` can follow its patrol path more effectively.
+            `maximumAcceleration` is set to a high number to enable the Robot to turn very quickly.
+            This ensures that the `Robot` can follow its patrol path more effectively.
         */
-        /// The maximum acceleration (in points per second per second) for the `TaskBot`.
+        /// The maximum acceleration (in points per second per second) for the `Robot`.
         static let maximumAcceleration: Float = 300.0
 
         /// The agent's mass.
         static let agentMass: Float = 0.25
         
-        /// The radius of the `TaskBot`'s physics body.
+        /// The radius of the `Robot`'s physics body.
         static var physicsBodyRadius: CGFloat = 35.0
 
-        /// The offset of the `TaskBot` physics body's center from the `TaskBot`'s center.
+        /// The offset of the `Robot` physics body's center from the `Robot`'s center.
         static let physicsBodyOffset = CGPoint(x: 0.0, y: -25.0)
 
-        /// The radius (in points) of the agent associated with this `TaskBot` for steering.
+        /// The radius (in points) of the agent associated with this `Robot` for steering.
         static let agentRadius = Float(physicsBodyRadius)
         
-        /// The offset of the agent's center from the `TaskBot`'s center.
+        /// The offset of the agent's center from the `Robot`'s center.
         static let agentOffset = physicsBodyOffset
         
         /// The maximum time to look ahead when following a path.
@@ -135,10 +135,10 @@ struct GameplayConfiguration {
         /// The buffer radius (in points) to add to polygon obstacles when calculating agent pathfinding.
         static let pathfindingGraphBufferRadius: Float = 30.0
         
-        /// The duration of a `TaskBot`'s pre-attack state.
+        /// The duration of a `Robot`'s pre-attack state.
         static let preAttackStateDuration: TimeInterval = 0.8
         
-        /// The duration of a `TaskBot`'s zapped state.
+        /// The duration of a `Robot`'s zapped state.
         static let zappedStateDuration: TimeInterval = 0.75
     }
 
@@ -195,7 +195,7 @@ struct GameplayConfiguration {
     }
     
     struct Flocking {
-        /// Separation, alignment, and cohesion parameters for multiple `TaskBot`s.
+        /// Separation, alignment, and cohesion parameters for multiple `Robot`s.
         static let separationRadius: Float = 25.3
         static let separationAngle = Float (3 * M_PI_4)
         static let separationWeight: Float = 2.0

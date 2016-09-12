@@ -3,42 +3,42 @@
     See LICENSE.txt for this sample’s licensing information
     
     Abstract:
-    This file introduces the rules used by the `TaskBot` rule system to determine an appropriate action for the `TaskBot`. The rules fall into three distinct sets:
-                Percentage of bad `TaskBot`s in the level (low, medium, high):
-                    `BadTaskBotPercentageLowRule`
-                    `BadTaskBotPercentageMediumRule`
-                    `BadTaskBotPercentageHighRule`
-                How close the `TaskBot` is to the `Player` (near, medium, far):
+    This file introduces the rules used by the `Robot` rule system to determine an appropriate action for the `Robot`. The rules fall into three distinct sets:
+                Percentage of bad `Robot`s in the level (low, medium, high):
+                    `BadRobotPercentageLowRule`
+                    `BadRobotPercentageMediumRule`
+                    `BadRobotPercentageHighRule`
+                How close the `Robot` is to the `Player` (near, medium, far):
                     `PlayerNearRule`
                     `PlayerMediumRule`
                     `PlayerFarRule`
-                How close the `TaskBot` is to its nearest "good" `TaskBot` (near, medium, far):
-                    `TaskBotNearRule`
-                    `TaskBotMediumRule`
-                    `TaskBotFarRule`
+                How close the `Robot` is to its nearest "good" `Robot` (near, medium, far):
+                    `RobotNearRule`
+                    `RobotMediumRule`
+                    `RobotFarRule`
 */
 
 import GameplayKit
 
 enum Fact: String {
     // Fuzzy rules pertaining to the proportion of "bad" bots in the level.
-    case badTaskBotPercentageLow = "BadTaskBotPercentageLow"
-    case badTaskBotPercentageMedium = "BadTaskBotPercentageMedium"
-    case badTaskBotPercentageHigh = "BadTaskBotPercentageHigh"
+    case badRobotPercentageLow = "BadRobotPercentageLow"
+    case badRobotPercentageMedium = "BadRobotPercentageMedium"
+    case badRobotPercentageHigh = "BadRobotPercentageHigh"
 
-    // Fuzzy rules pertaining to this `TaskBot`'s proximity to the `Player`.
+    // Fuzzy rules pertaining to this `Robot`'s proximity to the `Player`.
     case playerBotNear = "PlayerNear"
     case playerBotMedium = "PlayerMedium"
     case playerBotFar = "PlayerFar"
 
-    // Fuzzy rules pertaining to this `TaskBot`'s proximity to the nearest "good" `TaskBot`.
-    case goodTaskBotNear = "GoodTaskBotNear"
-    case goodTaskBotMedium = "GoodTaskBotMedium"
-    case goodTaskBotFar = "GoodTaskBotFar"
+    // Fuzzy rules pertaining to this `Robot`'s proximity to the nearest "good" `Robot`.
+    case goodRobotNear = "GoodRobotNear"
+    case goodRobotMedium = "GoodRobotMedium"
+    case goodRobotFar = "GoodRobotFar"
 }
 
-/// Asserts whether the number of "bad" `TaskBot`s is considered "low".
-class BadTaskBotPercentageLowRule: FuzzyTaskBotRule {
+/// Asserts whether the number of "bad" `Robot`s is considered "low".
+class BadRobotPercentageLowRule: FuzzyRobotRule {
     // MARK: Properties
     
     override func grade() -> Float {
@@ -47,11 +47,11 @@ class BadTaskBotPercentageLowRule: FuzzyTaskBotRule {
     
     // MARK: Initializers
     
-    init() { super.init(fact: .badTaskBotPercentageLow) }
+    init() { super.init(fact: .badRobotPercentageLow) }
 }
 
-/// Asserts whether the number of "bad" `TaskBot`s is considered "medium".
-class BadTaskBotPercentageMediumRule: FuzzyTaskBotRule {
+/// Asserts whether the number of "bad" `Robot`s is considered "medium".
+class BadRobotPercentageMediumRule: FuzzyRobotRule {
     // MARK: Properties
     
     override func grade() -> Float {
@@ -65,11 +65,11 @@ class BadTaskBotPercentageMediumRule: FuzzyTaskBotRule {
     
     // MARK: Initializers
     
-    init() { super.init(fact: .badTaskBotPercentageMedium) }
+    init() { super.init(fact: .badRobotPercentageMedium) }
 }
 
-/// Asserts whether the number of "bad" `TaskBot`s is considered "high".
-class BadTaskBotPercentageHighRule: FuzzyTaskBotRule {
+/// Asserts whether the number of "bad" `Robot`s is considered "high".
+class BadRobotPercentageHighRule: FuzzyRobotRule {
     // MARK: Properties
     
     override func grade() -> Float {
@@ -78,11 +78,11 @@ class BadTaskBotPercentageHighRule: FuzzyTaskBotRule {
     
     // MARK: Initializers
     
-    init() { super.init(fact: .badTaskBotPercentageHigh) }
+    init() { super.init(fact: .badRobotPercentageHigh) }
 }
 
-/// Asserts whether the `Player` is considered to be "near" to this `TaskBot`.
-class PlayerNearRule: FuzzyTaskBotRule {
+/// Asserts whether the `Player` is considered to be "near" to this `Robot`.
+class PlayerNearRule: FuzzyRobotRule {
     // MARK: Properties
 
     override func grade() -> Float {
@@ -96,8 +96,8 @@ class PlayerNearRule: FuzzyTaskBotRule {
     init() { super.init(fact: .playerBotNear) }
 }
 
-/// Asserts whether the `Player` is considered to be at a "medium" distance from this `TaskBot`.
-class PlayerMediumRule: FuzzyTaskBotRule {
+/// Asserts whether the `Player` is considered to be at a "medium" distance from this `Robot`.
+class PlayerMediumRule: FuzzyRobotRule {
     // MARK: Properties
 
     override func grade() -> Float {
@@ -111,8 +111,8 @@ class PlayerMediumRule: FuzzyTaskBotRule {
     init() { super.init(fact: .playerBotMedium) }
 }
 
-/// Asserts whether the `Player` is considered to be "far" from this `TaskBot`.
-class PlayerFarRule: FuzzyTaskBotRule {
+/// Asserts whether the `Player` is considered to be "far" from this `Robot`.
+class PlayerFarRule: FuzzyRobotRule {
     // MARK: Properties
     
     override func grade() -> Float {
@@ -126,49 +126,49 @@ class PlayerFarRule: FuzzyTaskBotRule {
     init() { super.init(fact: .playerBotFar) }
 }
 
-// MARK: TaskBot Proximity Rules
+// MARK: Robot Proximity Rules
 
-/// Asserts whether the nearest "good" `TaskBot` is considered to be "near" to this `TaskBot`.
-class GoodTaskBotNearRule: FuzzyTaskBotRule {
+/// Asserts whether the nearest "good" `Robot` is considered to be "near" to this `Robot`.
+class GoodRobotNearRule: FuzzyRobotRule {
     // MARK: Properties
 
     override func grade() -> Float {
-        guard let distance = snapshot.nearestGoodTaskBotTarget?.distance else { return 0.0 }
+        guard let distance = snapshot.nearestGoodRobotTarget?.distance else { return 0.0 }
         let oneThird = snapshot.proximityFactor / 3
         return (oneThird - distance) / oneThird
     }
 
     // MARK: Initializers
     
-    init() { super.init(fact: .goodTaskBotNear) }
+    init() { super.init(fact: .goodRobotNear) }
 }
 
-/// Asserts whether the nearest "good" `TaskBot` is considered to be at a "medium" distance from this `TaskBot`.
-class GoodTaskBotMediumRule: FuzzyTaskBotRule {
+/// Asserts whether the nearest "good" `Robot` is considered to be at a "medium" distance from this `Robot`.
+class GoodRobotMediumRule: FuzzyRobotRule {
     // MARK: Properties
     
     override func grade() -> Float {
-        guard let distance = snapshot.nearestGoodTaskBotTarget?.distance else { return 0.0 }
+        guard let distance = snapshot.nearestGoodRobotTarget?.distance else { return 0.0 }
         let oneThird = snapshot.proximityFactor / 3
         return 1 - (fabs(distance - oneThird) / oneThird)
     }
 
     // MARK: Initializers
     
-    init() { super.init(fact: .goodTaskBotMedium) }
+    init() { super.init(fact: .goodRobotMedium) }
 }
 
-/// Asserts whether the nearest "good" `TaskBot` is considered to be "far" from this `TaskBot`.
-class GoodTaskBotFarRule: FuzzyTaskBotRule {
+/// Asserts whether the nearest "good" `Robot` is considered to be "far" from this `Robot`.
+class GoodRobotFarRule: FuzzyRobotRule {
     // MARK: Properties
     
     override func grade() -> Float {
-        guard let distance = snapshot.nearestGoodTaskBotTarget?.distance else { return 0.0 }
+        guard let distance = snapshot.nearestGoodRobotTarget?.distance else { return 0.0 }
         let oneThird = snapshot.proximityFactor / 3
         return (distance - oneThird) / oneThird
     }
     
     // MARK: Initializers
     
-    init() { super.init(fact: .goodTaskBotFar) }
+    init() { super.init(fact: .goodRobotFar) }
 }

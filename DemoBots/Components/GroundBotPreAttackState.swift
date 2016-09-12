@@ -50,14 +50,14 @@ class GroundBotPreAttackState: GKState {
             If the `GroundBot` has been in its "pre-attack" state for long enough,
             move to the attack state.
         */
-        if elapsedTime >= GameplayConfiguration.TaskBot.preAttackStateDuration {
+        if elapsedTime >= GameplayConfiguration.Robot.preAttackStateDuration {
             stateMachine?.enter(GroundBotAttackState.self)
         }
     }
     
     override func isValidNextState(_ stateClass: AnyClass) -> Bool {
         switch stateClass {
-            case is TaskBotAgentControlledState.Type, is GroundBotAttackState.Type, is TaskBotZappedState.Type:
+            case is RobotAgentControlledState.Type, is GroundBotAttackState.Type, is RobotZappedState.Type:
                 return true
             
             default:
